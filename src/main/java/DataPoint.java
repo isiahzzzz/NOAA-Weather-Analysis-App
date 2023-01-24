@@ -11,7 +11,7 @@ public abstract class DataPoint {
     /**
      * Default constructor
      */
-    public DataPoint() {
+    protected DataPoint() {
         this("NONE ASSIGNED");
     }
 
@@ -19,11 +19,11 @@ public abstract class DataPoint {
      * Parameterized Constructor
      * @param attributes data flags
      */
-    public DataPoint(String attributes) {
+    protected DataPoint(String attributes) {
         this.attributes = attributes;
     }
 
     public String toString() {
-        return String.format("ATTRIBUTES: %s", attributes);
+        return String.format("Flags: %s", attributes);
     }
 }
