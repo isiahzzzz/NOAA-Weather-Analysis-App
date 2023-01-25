@@ -1,5 +1,12 @@
+/**
+ * REVISION HISTORY
+ * =============================================================================
+ * 1-25-2023 - Created class, default constructor, parameterized constructor,
+ * private class members.
+ */
 public class Record {
     //private class members
+    private final StationData station;
     private final SnowDepth snowDepth;
     private final SnowFall snowFall;
     private final AverageCloudiness averageCloudiness;
@@ -10,11 +17,12 @@ public class Record {
     private final PeakWindSpeed peakWindSpeed;
     private final WeatherType weatherType;
 
-    public Record(SnowDepth snowDepth, SnowFall snowFall,
+    public Record(StationData station, SnowDepth snowDepth, SnowFall snowFall,
                   AverageCloudiness averageCloudiness, TMIN tmin, TMAX tmax,
                   FrozenGroundThickness frozenGroundThickness,
                   AverageDailyWindSpeed averageDailyWindSpeed,
                   PeakWindSpeed peakWindSpeed, WeatherType weatherType) {
+        this.station = station;
         this.snowDepth = snowDepth;
         this.snowFall = snowFall;
         this.averageCloudiness = averageCloudiness;
@@ -28,8 +36,8 @@ public class Record {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s %s %s %s %s %s %s",
-                snowDepth, snowFall, averageCloudiness, tmin, tmax,
+        return String.format("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s",
+                station, snowDepth, snowFall, averageCloudiness, tmin, tmax,
                 frozenGroundThickness, averageDailyWindSpeed, peakWindSpeed,
                 weatherType);
     }

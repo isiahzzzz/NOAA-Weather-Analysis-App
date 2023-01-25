@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 
 public class UnitTests {
@@ -124,15 +127,34 @@ public class UnitTests {
      */
     @Test
     public void recordTest() {
-        Record testNorm = new Record(new SnowDepth("N", 1),
-                new SnowFall("N", 1),
-                new AverageCloudiness("N", 1),
-                new TMIN("N", 2),
-                new TMAX("N", 2),
-                new FrozenGroundThickness("N", 2),
-                new AverageDailyWindSpeed("N", 2),
-                new PeakWindSpeed("N", 2),
-                new WeatherType("N", 2));
+        Record testNorm =
+                new Record(new StationData("Portland, ME",
+                        new Date((2022 - 1900), 0, 25)),
+                        new SnowDepth("N", 1),
+                        new SnowFall("N", 1),
+                        new AverageCloudiness("N", 1),
+                        new TMIN("N", 2),
+                        new TMAX("N", 2),
+                        new FrozenGroundThickness("N", 2),
+                        new AverageDailyWindSpeed("N", 2),
+                        new PeakWindSpeed("N", 2),
+                        new WeatherType("N", 2));
         System.out.println(testNorm);
+        }
+
+    /**
+     * Unit test for StationData
+     */
+    @Test
+    public void stationDataTest() {
+        StationData testNorm = new StationData("Portland, ME",
+                new Date(122, Calendar.JANUARY, 1));
+        StationData testNan = new StationData();
+
+        assertEquals("Station: Portland, ME Date: Sat Jan 01 00:00:00 EST 2022",
+                testNorm.toString());
+        assertEquals("Station: NONE Date: Wed Dec 31 18:59:59 EST 1969",
+                testNan.toString());
     }
 }
+
