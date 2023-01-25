@@ -31,6 +31,7 @@ public class WeatherType extends DataPoint {
      * @return formatted string that indicates in english what weather type
      * was recorded.
      */
+    @Override
     public String toString() {
         //todo: translate weather type int to english
         return super.toString() + String.format(" Weather Type Recorded: %s",

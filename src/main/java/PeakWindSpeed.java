@@ -16,6 +16,8 @@ public class PeakWindSpeed extends DataPoint{
     public double getPeakWindSpeed() {
         return this.peakWindSpeed;
     }
+
+    @Override
     public String toString() {
         return super.toString() + String.format(" Peak Wind Speed: %.1f",
                 this.peakWindSpeed);

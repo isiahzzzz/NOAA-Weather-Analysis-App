@@ -17,8 +17,9 @@ public class AverageDailyWindSpeed extends DataPoint {
     public double getAvgWindSpeed() {
         return avgWindSpeed;
     }
+    @Override
     public String toString() {
-        return super.toString() + String.format("Average Wind Speed: %s",
+        return super.toString() + String.format(" Average Wind Speed: %s",
                 this.avgWindSpeed);
     }
 }
