@@ -10,18 +10,19 @@ public class Record {
     private final SnowDepth snowDepth;
     private final SnowFall snowFall;
     private final AverageCloudiness averageCloudiness;
-    private final TMIN tmin;
-    private final TMAX tmax;
+    private final TMin tmin;
+    private final TMax tmax;
     private final FrozenGroundThickness frozenGroundThickness;
-    private final AverageDailyWindSpeed averageDailyWindSpeed;
+    //private final AverageDailyWindSpeed averageDailyWindSpeed;
     private final PeakWindSpeed peakWindSpeed;
     private final WeatherType weatherType;
+    private final WeatherVicinity weatherVicinity;
 
     public Record(StationData station, SnowDepth snowDepth, SnowFall snowFall,
-                  AverageCloudiness averageCloudiness, TMIN tmin, TMAX tmax,
+                  AverageCloudiness averageCloudiness, TMin tmin, TMax tmax,
                   FrozenGroundThickness frozenGroundThickness,
-                  AverageDailyWindSpeed averageDailyWindSpeed,
-                  PeakWindSpeed peakWindSpeed, WeatherType weatherType) {
+                  PeakWindSpeed peakWindSpeed, WeatherType weatherType,
+                  WeatherVicinity weatherVicinity) {
         this.station = station;
         this.snowDepth = snowDepth;
         this.snowFall = snowFall;
@@ -29,16 +30,16 @@ public class Record {
         this.tmin = tmin;
         this.tmax = tmax;
         this.frozenGroundThickness = frozenGroundThickness;
-        this.averageDailyWindSpeed = averageDailyWindSpeed;
         this.peakWindSpeed = peakWindSpeed;
         this.weatherType = weatherType;
+        this.weatherVicinity = weatherVicinity;
     }
 
     @Override
     public String toString() {
-        return String.format("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s",
+        return String.format("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n",
                 station, snowDepth, snowFall, averageCloudiness, tmin, tmax,
-                frozenGroundThickness, averageDailyWindSpeed, peakWindSpeed,
-                weatherType);
+                frozenGroundThickness, peakWindSpeed,
+                weatherType, weatherVicinity);
     }
 }

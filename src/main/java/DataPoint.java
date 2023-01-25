@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * REVISION HISTORY
  * =============================================================================
@@ -5,8 +9,10 @@
  * private class members.
  */
 public abstract class DataPoint {
-
+    // general flags
     protected String attributes;
+
+    protected String[] weatherAttribs;
 
     /**
      * Default constructor
@@ -23,7 +29,17 @@ public abstract class DataPoint {
         this.attributes = attributes;
     }
 
+    protected DataPoint(String[] weatherAttribs) {
+        this.weatherAttribs = weatherAttribs;
+    }
+
     public String toString() {
-        return String.format("Flags: %s", attributes);
+        if(weatherAttribs == null) {
+            return attributes.equals("") ? "" : String.format("Flags: %s ",
+                    attributes);
+        } else {
+            return String.format("Weather flags: %s",
+                    Arrays.toString(weatherAttribs));
+        }
     }
 }

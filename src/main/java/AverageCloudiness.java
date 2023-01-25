@@ -5,15 +5,19 @@
  * private class members.
  */
 public class AverageCloudiness extends DataPoint {
-    private double avgCloudiness;
+    private final double avgCloudiness;
 
     /**
      * Default constructor
      */
     public AverageCloudiness() {
-        this("NONE", -999.0);
+        this("NULL", -999.0);
     }
-
+    public AverageCloudiness(String attributes, String avgCloudiness){
+        super(attributes);
+        this.avgCloudiness = avgCloudiness.equals("") ? -999.0 :
+                Double.parseDouble(avgCloudiness);
+    }
     /**
      * Parameterized Constructor
      * @param attributes Flags
@@ -30,7 +34,7 @@ public class AverageCloudiness extends DataPoint {
 
     @Override
     public String toString() {
-        return super.toString() + String.format(" Average Cloudiness: %.1f",
+        return super.toString() + String.format("Average Cloudiness: %.1f",
                 this.avgCloudiness);
     }
 }
