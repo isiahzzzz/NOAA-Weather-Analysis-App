@@ -118,4 +118,21 @@ public class UnitTests {
                 testNan.toString());
 
     }
+
+    /**
+     * Unit test for Record
+     */
+    @Test
+    public void recordTest() {
+        Record testNorm = new Record(new SnowDepth("N", 1),
+                new SnowFall("N", 1),
+                new AverageCloudiness("N", 1),
+                new TMIN("N", 2),
+                new TMAX("N", 2),
+                new FrozenGroundThickness("N", 2),
+                new AverageDailyWindSpeed("N", 2),
+                new PeakWindSpeed("N", 2),
+                new WeatherType("N", 2));
+        System.out.println(testNorm);
+    }
 }
