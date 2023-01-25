@@ -77,4 +77,45 @@ public class UnitTests {
         assertEquals("Flags: test attrib TMIN: 21", testNorm.toString());
         assertEquals("Flags: NONE TMIN: -999", testNan.toString());
     }
+
+    /**
+     * Unit test for Average Cloudiness
+     */
+    @Test
+    public void averageCloudinessTest() {
+        AverageCloudiness testNorm = new AverageCloudiness("test attrib", 21);
+        AverageCloudiness testNan = new AverageCloudiness();
+        assertEquals("Flags: test attrib Average Cloudiness: 21.0",
+                testNorm.toString());
+        assertEquals("Flags: NONE Average Cloudiness: -999.0",
+                testNan.toString());
+    }
+
+    /**
+     * Unit test for SnowFall
+     */
+    @Test
+    public void snowFallTest() {
+        SnowFall testNorm = new SnowFall("test attrib", 21);
+        SnowFall testNan = new SnowFall();
+        assertEquals("Flags: test attrib Cumulative Snowfall: 21.0",
+                testNorm.toString());
+        assertEquals("Flags: NONE Cumulative Snowfall: -999.0",
+                testNan.toString());
+
+    }
+
+    /**
+     * Unit test for SnowDepth
+     */
+    @Test
+    public void snowDepthTest() {
+        SnowDepth testNorm = new SnowDepth("test attrib", 21);
+        SnowDepth testNan = new SnowDepth();
+        assertEquals("Flags: test attrib Snow depth: 21.0",
+                testNorm.toString());
+        assertEquals("Flags: NONE Snow depth: -999.0",
+                testNan.toString());
+
+    }
 }
