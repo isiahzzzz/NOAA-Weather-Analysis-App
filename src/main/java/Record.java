@@ -1,6 +1,7 @@
 /**
  * REVISION HISTORY
  * =============================================================================
+ * 1-27-2023 - added getters and setters, no further changes.
  * 1-25-2023 - Created class, default constructor, parameterized constructor,
  * private class members.
  */
@@ -33,6 +34,46 @@ public class Record {
         this.peakWindSpeed = peakWindSpeed;
         this.weatherType = weatherType;
         this.weatherVicinity = weatherVicinity;
+    }
+
+    public StationData getStation() {
+        return station;
+    }
+
+    public SnowDepth getSnowDepth() {
+        return snowDepth;
+    }
+
+    public SnowFall getSnowFall() {
+        return snowFall;
+    }
+
+    public AverageCloudiness getAverageCloudiness() {
+        return averageCloudiness;
+    }
+
+    public TMin getTmin() {
+        return tmin;
+    }
+
+    public TMax getTmax() {
+        return tmax;
+    }
+
+    public FrozenGroundThickness getFrozenGroundThickness() {
+        return frozenGroundThickness;
+    }
+
+    public PeakWindSpeed getPeakWindSpeed() {
+        return peakWindSpeed;
+    }
+
+    public WeatherType getWeatherType() {
+        return weatherType;
+    }
+
+    public WeatherVicinity getWeatherVicinity() {
+        return weatherVicinity;
     }
 
     @Override

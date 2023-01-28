@@ -11,16 +11,25 @@ public class NOAAWeatherApp {
         Scanner sc = new Scanner(System.in);
         String key;
         //todo: menu options here.
-        System.out.println("Press N to create new database from file.");
+        System.out.println("DEVELOPMENT MENU: ");
+        System.out.println("N - CREATE NEW DATABASE FROM FILE");
+        System.out.println("Q - QUIT");
+        System.out.println("S - SORTS OPTIONS");
         key = sc.next();
 
         switch(key.toLowerCase()) {
             //todo: initialize database
             case "n" : data = new Database(fileName);
+                menu(fileName);
                 break;
             //todo: terminate program
             case "q" :
                 break;
+
+            case "p" :
+                for(Record rec : data.getDataSet()) {
+                    System.out.println(rec);
+                }
         }
     }
     public void run(String fileName) {
