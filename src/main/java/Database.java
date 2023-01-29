@@ -10,14 +10,13 @@
  * 1-23-2023 - laid out class structure.
  */
 import au.com.bytecode.opencsv.CSVReader;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.time.Clock;
+import java.util.*;
 
 public class Database {
     //todo: Will be the ArrayList of Records.
@@ -147,9 +146,13 @@ public class Database {
             case "tmax" :
                 System.out.print("SORTING!");
                 Comparator<Record> cmp = new Record.CmpTMax();
+                long startTime = System.nanoTime();
                 Arrays.sort(dataArray, cmp);
+                long endTime = System.nanoTime();
                 System.out.print("\r");
-                System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
+                System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
+                        (endTime - startTime) / 1000000);
+                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
                         ((CmpCnt)cmp).getCmpCnt());
                 System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
                         dataArray.length * Math.log(dataArray.length));
