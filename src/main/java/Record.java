@@ -1,11 +1,15 @@
+import java.util.Comparator;
+
 /**
  * REVISION HISTORY
  * =============================================================================
+ * 1-28-2023 - added compareTo that implements a natural sort (dates) and a
+ * sort for TMin, TMax, and snowfall per day. Also added documentation.
  * 1-27-2023 - added getters and setters, no further changes.
  * 1-25-2023 - Created class, default constructor, parameterized constructor,
  * private class members.
  */
-public class Record {
+public class Record implements Comparable<Record> {
     //private class members
     private final StationData station;
     private final SnowDepth snowDepth;
@@ -76,11 +80,69 @@ public class Record {
         return weatherVicinity;
     }
 
+    public static class CmpTMax extends CmpCnt implements Comparator<Record>{
+        /**
+         * Sorts by TMax temps, sorts highest to lowest
+         * @param o1 the first object to be compared.
+         * @param o2 the second object to be compared.
+         * @return difference
+         */
+        @Override
+        public int compare(Record o1, Record o2) {
+            cmpCnt++;
+            return o2.getTmax().getTmax() - o1.getTmax().getTmax();
+        }
+    }
+
+    public static class CmpTMin extends CmpCnt implements Comparator<Record> {
+        /**
+         * Sorts by TMin temps, orders lowest to highest
+         * @param o1 the first object to be compared.
+         * @param o2 the second object to be compared.
+         * @return difference
+         */
+        @Override
+        public int compare(Record o1, Record o2) {
+            cmpCnt++;
+            return o1.getTmin().getTmin() - o2.getTmin().getTmin();
+
+        }
+    }
+
+    public static class CmpSnowFallHiLow extends CmpCnt implements Comparator<Record> {
+        /**
+         * Sorts by daily snowfall amounts, high to low.
+         * @param o1 the first object to be compared.
+         * @param o2 the second object to be compared.
+         * @return difference
+         */
+        public int compare(Record o1, Record o2){
+            cmpCnt++;
+            return (int) (o2.getSnowFall().getAmntSnowed() - o1.getSnowFall().getAmntSnowed());
+        }
+    }
+
     @Override
     public String toString() {
         return String.format("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n",
                 station, snowDepth, snowFall, averageCloudiness, tmin, tmax,
                 frozenGroundThickness, peakWindSpeed,
                 weatherType, weatherVicinity);
+    }
+
+    /**
+     * Sorts by date by default
+     * @param that the object to be compared.
+     * @return positive, negative or 0
+     */
+    @Override
+    public int compareTo(Record that) {
+        if (this.station.getDateObject().compareTo(that.station.getDateObject()) > 0) {
+            return 1;
+        } else if(this.station.getDateObject().compareTo(that.station.getDateObject()) < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }

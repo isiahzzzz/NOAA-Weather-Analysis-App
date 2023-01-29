@@ -1,12 +1,7 @@
-import au.com.bytecode.opencsv.CSVReader;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 /**
  * REVISION HISTORY
+ * 1-8-2023 - Added Record[] to enable usage of built-in Array.sorts
+ * functionality.
  * 1-27-2023 - Finished CSVReader loop, tested and working, tested edge cases
  * -- still need to test more -- and wrote calculateDataFacts which
  * calculates generalized facts about the data being passed in.
@@ -14,9 +9,20 @@ import java.util.Arrays;
  * private class members.
  * 1-23-2023 - laid out class structure.
  */
+import au.com.bytecode.opencsv.CSVReader;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Scanner;
+
 public class Database {
     //todo: Will be the ArrayList of Records.
     private ArrayList<Record> dataSet;
+    private Record[] dataArray;
 
     /**
      * Initializes database
@@ -61,8 +67,9 @@ public class Database {
                 dataSet.add(rec);
                 temp = reader.readNext();
             }
+            dataArray = new Record[dataSet.size()];
+            dataArray = dataSet.toArray(dataArray);
             System.out.print("\r");
-
             System.out.println("Success! Created database.");
             System.out.println("==========GENERAL FACTS ABOUT DATA===========");
             System.out.println(calculateDataFacts(fileName));
@@ -78,6 +85,7 @@ public class Database {
             System.err.println("Tried to access non-existent data.");
             System.exit(4);
         }
+
     }
 
     /**
@@ -122,7 +130,52 @@ public class Database {
                 coldestDay.getStation().getDate(), hottestTempRecorded,
                 hottestDay.getStation().getDate(), hottestTempRecorded - coldestTempRecorded);
     }
-    public ArrayList<Record> getDataSet() {
-        return dataSet;
+    public Record[] getDataSet() {
+        return dataArray;
     }
+
+    /**
+     * todo: implement functionality that enables user to sort by specific parameter
+     */
+    public void sorts() {
+        System.out.println("SORTS MENU: (DEVELOPMENT)");
+        System.out.println("[tmax] sort data by tmax");
+        System.out.println("[tmin] sort data by tmin");
+        Scanner sc = new Scanner(System.in);
+        String key = sc.nextLine();
+        switch(key.toLowerCase()) {
+            case "tmax" :
+                System.out.print("SORTING!");
+                Comparator<Record> cmp = new Record.CmpTMax();
+                Arrays.sort(dataArray, cmp);
+                System.out.print("\r");
+                System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
+                        ((CmpCnt)cmp).getCmpCnt());
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length));
+                ((CmpCnt)cmp).resetCmpCnt();
+                break;
+            case "tmin" :
+                System.out.print("SORTING!");
+                Comparator<Record> cmpTMin = new Record.CmpTMin();
+                Arrays.sort(dataArray, cmpTMin);
+                System.out.print("\r");
+                System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
+                        ((CmpCnt)cmpTMin).getCmpCnt());
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length));
+                ((CmpCnt)cmpTMin).resetCmpCnt();
+                break;
+            case "hi-low snow" :
+                Comparator<Record> cmpSnowHiLow = new Record.CmpSnowFallHiLow();
+                Arrays.sort(dataArray, cmpSnowHiLow);
+                System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
+                        ((CmpCnt) cmpSnowHiLow).getCmpCnt());
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length));
+                ((CmpCnt)cmpSnowHiLow).resetCmpCnt();
+        }
+
+    }
+
 }

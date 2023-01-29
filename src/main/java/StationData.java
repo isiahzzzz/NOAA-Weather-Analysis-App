@@ -1,6 +1,7 @@
 /**
  * REVISION HISTORY
  * =============================================================================
+ * 1-28-2023 - Added accessor that returns Date object rather than String.
  * 1-27-2023 - Added two accessors for Date and Station, added formatting for
  * date printing.
  * 1-25-2023 - Changed constructor from Date to String so that I can handle
@@ -61,6 +62,10 @@ public class StationData {
     public String getDate() {
         DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
             return formatter.format(date);
+    }
+
+    public Date getDateObject() {
+        return this.date;
     }
 
     @Override
