@@ -122,6 +122,33 @@ public class Record implements Comparable<Record> {
         }
     }
 
+    public static class CmpDate extends CmpCnt implements Comparator<Record> {
+        /**
+         * Sorts objects by Date object.
+         * @param o1 the first object to be compared.
+         * @param o2 the second object to be compared.
+         * @return date difference
+         */
+        @Override
+        public int compare(Record o1, Record o2) {
+            cmpCnt++;
+            return o1.getStation().getDateObject().compareTo(o2.getStation().getDateObject());
+        }
+    }
+
+    public static class CmpWindSpeed extends  CmpCnt implements Comparator<Record> {
+        /**
+         * Sorts by daily peak wind speed, high to low.
+         * @param o1 the first object to be compared.
+         * @param o2 the second object to be compared.
+         * @return difference
+         */
+        public int compare(Record o1,Record o2) {
+            cmpCnt++;
+            return (int) (o2.getPeakWindSpeed().getPeakWindSpeed() - o1.getPeakWindSpeed().getPeakWindSpeed());
+        }
+    }
+
     @Override
     public String toString() {
         return String.format("%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n%s%n",

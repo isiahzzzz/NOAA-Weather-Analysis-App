@@ -1,5 +1,6 @@
 /**
  * REVISION HISTORY
+ * 2-18-2023 - Implemented sort by wind speed.
  * 1-8-2023 - Added Record[] to enable usage of built-in Array.sorts
  * functionality.
  * 1-27-2023 - Finished CSVReader loop, tested and working, tested edge cases
@@ -140,6 +141,9 @@ public class Database {
         System.out.println("SORTS MENU: (DEVELOPMENT)");
         System.out.println("[tmax] sort data by tmax");
         System.out.println("[tmin] sort data by tmin");
+        System.out.println("[snow] sort data by snow depth");
+        System.out.println("[wind] sort data by wind speeds");
+        System.out.println("[date] sort data by date");
         Scanner sc = new Scanner(System.in);
         String key = sc.nextLine();
         switch(key.toLowerCase()) {
@@ -169,16 +173,65 @@ public class Database {
                         dataArray.length * Math.log(dataArray.length));
                 ((CmpCnt)cmpTMin).resetCmpCnt();
                 break;
-            case "hi-low snow" :
+            case "snow" :
+                System.out.print("SORTING!");
                 Comparator<Record> cmpSnowHiLow = new Record.CmpSnowFallHiLow();
+                System.out.print("\r");
                 Arrays.sort(dataArray, cmpSnowHiLow);
                 System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
                         ((CmpCnt) cmpSnowHiLow).getCmpCnt());
                 System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
                         dataArray.length * Math.log(dataArray.length));
                 ((CmpCnt)cmpSnowHiLow).resetCmpCnt();
+                break;
+            case "wind" :
+                System.out.print("SORTING!");
+                Comparator<Record> cmpWindSpeed = new Record.CmpWindSpeed();
+                System.out.print("\r");
+                System.out.println("SORTING COMPLETE");
+                Arrays.sort(dataArray, cmpWindSpeed);
+                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
+                        ((CmpCnt)cmpWindSpeed).getCmpCnt());
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length));
+                ((CmpCnt)cmpWindSpeed).resetCmpCnt();
+                break;
+            case "date":
+                System.out.print("SORTING!");
+                Comparator<Record> cmpDate = new Record.CmpDate();
+                System.out.print("\r");
+                System.out.println("SORTING COMPLETE!");
+                Arrays.sort(dataArray, cmpDate);
+                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
+                        ((CmpCnt)cmpDate).getCmpCnt());
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length));
+                ((CmpCnt)cmpDate).resetCmpCnt();
+                break;
+            case "insertion":
+                System.out.println("SORTING!");
+                Comparator<Record> cmpTMax = new Record.CmpTMax();
+                Sorts<Record> temp = new Sorts<>();
+                dataArray = temp.insertionSort(cmpTMax, dataArray);
+
         }
 
     }
-
+    public static class Sorts <E> {
+        public E[] insertionSort(Comparator<Record> cmp, E[] dataArray)    {
+            for (int i = 1; i < dataArray.length; ++i) {
+                E key = dataArray[i];
+                int j = i - 1;
+                while (j >= 0 && cmp.compare((Record) dataArray[j],
+                        (Record) key) > 0) {
+                    {
+                        dataArray[j + 1] = dataArray[j];
+                        j = j - 1;
+                    }
+                }
+                dataArray[j + 1] = key;
+            }
+            return dataArray;
+        }
+    }
 }
