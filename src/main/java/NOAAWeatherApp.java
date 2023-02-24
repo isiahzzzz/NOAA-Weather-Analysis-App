@@ -25,12 +25,10 @@ public class NOAAWeatherApp {
         try {
 
             switch (key.toLowerCase()) {
-                //todo: initialize database
                 case "n":
                     data = new Database(fileName);
                     menu(fileName);
                     break;
-                //todo: terminate program
                 case "q":
                     break;
 
@@ -42,7 +40,7 @@ public class NOAAWeatherApp {
                     menu(fileName);
                     break;
                 case "s":
-                    data.sorts();
+                    data.pickSorts();
                     menu(fileName);
             }
         }catch (NullPointerException e) {

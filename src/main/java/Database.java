@@ -1,5 +1,7 @@
 /**
  * REVISION HISTORY
+ * 2-23-2023 - Huge overhaul to sort menu, made implementing new sorts far
+ * more efficient. Tested and working!
  * 2-18-2023 - Implemented sort by wind speed.
  * 1-8-2023 - Added Record[] to enable usage of built-in Array.sorts
  * functionality.
@@ -11,18 +13,17 @@
  * 1-23-2023 - laid out class structure.
  */
 import au.com.bytecode.opencsv.CSVReader;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.Clock;
 import java.util.*;
 
 public class Database {
     //todo: Will be the ArrayList of Records.
     private ArrayList<Record> dataSet;
     private Record[] dataArray;
+    private final String[] sorts = {"insertion", "selection"};
 
     /**
      * Initializes database
@@ -115,7 +116,6 @@ public class Database {
                 hottestDay = rec;
             }
         }
-        //todo: ADD NULL POINTER EXCEPTIONS FOR STATIONS
         return String.format("%s contained data that ranged over %d days.%n" +
                 "That means the data spans over %.0f weeks or %.2f years.%n" +
                         "Over this timespan, it snowed %.1f inches, or %.1f " +
@@ -135,103 +135,124 @@ public class Database {
     }
 
     /**
-     * todo: implement functionality that enables user to sort by specific parameter
+     * Our menu for setting sort algorithm and sort param.
      */
-    public void sorts() {
+    public void pickSorts() {
+        long startTime = 0;
+        long endTime = 0;
+        Scanner sc = new Scanner(System.in);
+        Sorts<Record> temp = new Sorts<>();
+        String key = sortsSetter(sc);
+        if(key.equals("insertion")){
+            Comparator<Record> cmp = paramSetter(sc);
+            startTime = System.nanoTime();
+            temp.insertionSort(cmp, dataArray);
+            endTime = System.nanoTime();
+            assert cmp != null;
+            dumpRunStats(endTime, startTime, ((CmpCnt)cmp).getCmpCnt(),
+                    "O(n^2)");
+            ((CmpCnt)cmp).resetCmpCnt();
+        }
+        if(key.equals("dual-pivot")){
+            Comparator<Record> cmp = paramSetter(sc);
+            startTime = System.nanoTime();
+            Arrays.sort(dataArray, cmp);
+            endTime = System.nanoTime();
+            assert cmp != null;
+            dumpRunStats(endTime, startTime, ((CmpCnt)cmp).getCmpCnt(),
+                    "O(nlog(n))");
+            ((CmpCnt)cmp).resetCmpCnt();
+        }
+    }
+
+    private void dumpRunStats(long endTime, long startTime, int comparisons,
+                              String complexity) {
+        switch(complexity) {
+            case "O(n^2)" -> {
+                System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
+                        (endTime - startTime) / 1000000);
+                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
+                        comparisons);
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        Math.pow(dataArray.length, 2));
+            }
+            case "O(nlog(n))" -> {
+                System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
+                        (endTime - startTime) / 1000000);
+                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
+                        comparisons);
+                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length));
+            }
+        }
+    }
+
+    /**
+     * "Sets" our sort option
+     * @param sc user-input
+     * @return our sort type
+     */
+    private String sortsSetter(Scanner sc){
         System.out.println("SORTS MENU: (DEVELOPMENT)");
+        System.out.println("\"dual-pivot\" for dual-pivot quick sort");
+        System.out.println("\"insertion\" for insertion sort");
+        System.out.println("\"selection\" for selection sort");
+        return sc.nextLine();
+    }
+
+    /**
+     * "Sets" params for sorts.
+     * @param sc user input
+     * @return Comparator Object to be sorted by
+     */
+    private Comparator<Record> paramSetter(Scanner sc){
+
         System.out.println("[tmax] sort data by tmax");
         System.out.println("[tmin] sort data by tmin");
         System.out.println("[snow] sort data by snow depth");
         System.out.println("[wind] sort data by wind speeds");
         System.out.println("[date] sort data by date");
-        Scanner sc = new Scanner(System.in);
-        String key = sc.nextLine();
-        switch(key.toLowerCase()) {
-            case "tmax" :
-                System.out.print("SORTING!");
-                Comparator<Record> cmp = new Record.CmpTMax();
-                long startTime = System.nanoTime();
-                Arrays.sort(dataArray, cmp);
-                long endTime = System.nanoTime();
-                System.out.print("\r");
-                System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
-                        (endTime - startTime) / 1000000);
-                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
-                        ((CmpCnt)cmp).getCmpCnt());
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        dataArray.length * Math.log(dataArray.length));
-                ((CmpCnt)cmp).resetCmpCnt();
-                break;
-            case "tmin" :
-                System.out.print("SORTING!");
-                Comparator<Record> cmpTMin = new Record.CmpTMin();
-                Arrays.sort(dataArray, cmpTMin);
-                System.out.print("\r");
-                System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
-                        ((CmpCnt)cmpTMin).getCmpCnt());
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        dataArray.length * Math.log(dataArray.length));
-                ((CmpCnt)cmpTMin).resetCmpCnt();
-                break;
-            case "snow" :
-                System.out.print("SORTING!");
-                Comparator<Record> cmpSnowHiLow = new Record.CmpSnowFallHiLow();
-                System.out.print("\r");
-                Arrays.sort(dataArray, cmpSnowHiLow);
-                System.out.printf("NUMBER OF ACTUAL COMPARISONS MADE: %d%n",
-                        ((CmpCnt) cmpSnowHiLow).getCmpCnt());
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        dataArray.length * Math.log(dataArray.length));
-                ((CmpCnt)cmpSnowHiLow).resetCmpCnt();
-                break;
-            case "wind" :
-                System.out.print("SORTING!");
-                Comparator<Record> cmpWindSpeed = new Record.CmpWindSpeed();
-                System.out.print("\r");
-                System.out.println("SORTING COMPLETE");
-                Arrays.sort(dataArray, cmpWindSpeed);
-                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
-                        ((CmpCnt)cmpWindSpeed).getCmpCnt());
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        dataArray.length * Math.log(dataArray.length));
-                ((CmpCnt)cmpWindSpeed).resetCmpCnt();
-                break;
-            case "date":
-                System.out.print("SORTING!");
-                Comparator<Record> cmpDate = new Record.CmpDate();
-                System.out.print("\r");
-                System.out.println("SORTING COMPLETE!");
-                Arrays.sort(dataArray, cmpDate);
-                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
-                        ((CmpCnt)cmpDate).getCmpCnt());
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        dataArray.length * Math.log(dataArray.length));
-                ((CmpCnt)cmpDate).resetCmpCnt();
-                break;
-            case "insertion":
-                System.out.println("SORTING!");
-                Comparator<Record> cmpTMax = new Record.CmpTMax();
-                Sorts<Record> temp = new Sorts<>();
-                dataArray = temp.insertionSort(cmpTMax, dataArray);
 
+        String key = sc.nextLine().trim().toLowerCase();
+        switch (key) {
+            case "tmax" -> {
+                System.out.println("Sorting by TMAX");
+                return new Record.CmpTMax();
+            }
+            case "tmin" -> {
+                System.out.println("Sorting by TMIN");
+                return new Record.CmpTMin();
+            }
+            case "snow" -> {
+                System.out.println("Sorting by SNOW");
+                return new Record.CmpSnowFallHiLow();
+            }
+            case "wind" -> {
+                System.out.println("Sorting by WIND");
+                return new Record.CmpWindSpeed();
+            }
+            case "date" -> {
+                System.out.println("Sorting by DATE");
+                return new Record.CmpDate();
+            }
+            default -> {
+                return null;
+            }
         }
-
     }
-    public static class Sorts <E> {
-        public E[] insertionSort(Comparator<Record> cmp, E[] dataArray)    {
+
+    private static class Sorts<E> {
+        public void insertionSort(Comparator<Record> cmp, E[] dataArray) {
             for (int i = 1; i < dataArray.length; ++i) {
                 E key = dataArray[i];
                 int j = i - 1;
                 while (j >= 0 && cmp.compare((Record) dataArray[j],
                         (Record) key) > 0) {
-                    {
                         dataArray[j + 1] = dataArray[j];
                         j = j - 1;
-                    }
                 }
                 dataArray[j + 1] = key;
             }
-            return dataArray;
         }
     }
 }
