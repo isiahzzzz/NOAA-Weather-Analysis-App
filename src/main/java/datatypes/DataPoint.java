@@ -1,6 +1,6 @@
-import java.util.ArrayList;
+package datatypes;
+
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * REVISION HISTORY
@@ -29,6 +29,10 @@ public abstract class DataPoint {
         this.attributes = attributes;
     }
 
+    /**
+     * For weather attribs
+     * @param weatherAttribs array of weather attribs
+     */
     protected DataPoint(String[] weatherAttribs) {
         this.weatherAttribs = weatherAttribs;
     }

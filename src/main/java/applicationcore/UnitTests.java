@@ -1,16 +1,19 @@
+package applicationcore;
+
+import datatypes.*;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 public class UnitTests {
     /**
-     * UnitTests for WeatherType objects.
+     * Application.UnitTests for Application.WeatherType objects.
      */
     @Test
     public void weatherTypeTests() {
-        //WeatherType testNorm = new WeatherType("test attrib", 1);
-        //WeatherType testNan = new WeatherType();
-        //WeatherType testNoFlag = new WeatherType("", 1);
+        //Application.WeatherType testNorm = new Application.WeatherType("test attrib", 1);
+        //Application.WeatherType testNan = new Application.WeatherType();
+        //Application.WeatherType testNoFlag = new Application.WeatherType("", 1);
         //assertEquals("Flags: test attrib Weather Type Recorded: 1",
                 //testNorm.toString());
         //assertEquals("Flags: N/A Weather Type Recorded: 1",
@@ -18,7 +21,7 @@ public class UnitTests {
     }
 
     /**
-     * Unit test for PeakWindSpeed objects.
+     * Unit test for Application.PeakWindSpeed objects.
      */
     @Test
     public void peakWindSpeedTests() {
@@ -44,7 +47,7 @@ public class UnitTests {
     }
 
     /**
-     * Unit tests for FrozenGroundThickness
+     * Unit tests for Application.FrozenGroundThickness
      */
     @Test
     public void frozenGroundThicknessTest() {
@@ -93,7 +96,7 @@ public class UnitTests {
     }
 
     /**
-     * Unit test for SnowFall
+     * Unit test for Application.SnowFall
      */
     @Test
     public void snowFallTest() {
@@ -107,7 +110,7 @@ public class UnitTests {
     }
 
     /**
-     * Unit test for SnowDepth
+     * Unit test for Application.SnowDepth
      */
     @Test
     public void snowDepthTest() {
@@ -121,33 +124,33 @@ public class UnitTests {
     }
 
     /**
-     * Unit test for Record
+     * Unit test for Application.Record
      */
     //@Test
     /*public void recordTest() {
-        Record testNorm =
-                new Record(new StationData("Portland, ME",
+        Application.Record testNorm =
+                new Application.Record(new Application.StationData("Portland, ME",
                         new Date((2022 - 1900), 0, 25)),
-                        new SnowDepth("N", 1),
-                        new SnowFall("N", 1),
-                        new AverageCloudiness("N", 1),
+                        new Application.SnowDepth("N", 1),
+                        new Application.SnowFall("N", 1),
+                        new Application.AverageCloudiness("N", 1),
                         new TMIN("N", 2),
                         new TMAX("N", 2),
-                        new FrozenGroundThickness("N", 2),
-                        new AverageDailyWindSpeed("N", 2),
-                        new PeakWindSpeed("N", 2),
-                        new WeatherType("N", 2));
+                        new Application.FrozenGroundThickness("N", 2),
+                        new Application.AverageDailyWindSpeed("N", 2),
+                        new Application.PeakWindSpeed("N", 2),
+                        new Application.WeatherType("N", 2));
         System.out.println(testNorm);
         } */
 
     /**
-     * Unit test for StationData
+     * Unit test for Application.StationData
      */
     //@Test
    /* public void stationDataTest() {
-        StationData testNorm = new StationData("Portland, ME",
+        Application.StationData testNorm = new Application.StationData("Portland, ME",
                 new Date(122, Calendar.JANUARY, 1));
-        StationData testNan = new StationData();
+        Application.StationData testNan = new Application.StationData();
 
         assertEquals("Station: Portland, ME Date: Sat Jan 01 00:00:00 EST 2022",
                 testNorm.toString());

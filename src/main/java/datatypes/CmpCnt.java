@@ -1,5 +1,5 @@
+package datatypes;
 
-import java.util.Comparator;
 public class CmpCnt {
 
     protected int cmpCnt;

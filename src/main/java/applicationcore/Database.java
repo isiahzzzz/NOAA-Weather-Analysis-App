@@ -1,9 +1,11 @@
-/**
+package applicationcore; /**
  * REVISION HISTORY
+ * 3-6-2023 - Large changes made to packaging structure, tested and working.
+ * Adding comments to uncommented methods.
  * 2-23-2023 - Huge overhaul to sort menu, made implementing new sorts far
  * more efficient. Tested and working!
  * 2-18-2023 - Implemented sort by wind speed.
- * 1-8-2023 - Added Record[] to enable usage of built-in Array.sorts
+ * 1-8-2023 - Added Application.Record[] to enable usage of built-in Array.sorts
  * functionality.
  * 1-27-2023 - Finished CSVReader loop, tested and working, tested edge cases
  * -- still need to test more -- and wrote calculateDataFacts which
@@ -13,6 +15,8 @@
  * 1-23-2023 - laid out class structure.
  */
 import au.com.bytecode.opencsv.CSVReader;
+import datatypes.*;
+import datatypes.Record;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,10 +24,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class Database {
-    //todo: Will be the ArrayList of Records.
     private ArrayList<Record> dataSet;
     private Record[] dataArray;
-    private final String[] sorts = {"insertion", "selection"};
 
     /**
      * Initializes database
@@ -44,23 +46,23 @@ public class Database {
                 StationData s = new StationData(temp[0], temp[2]);
                 //creating average cloudiness
                 AverageCloudiness ac = new AverageCloudiness(temp[4], temp[3]);
-                //creating FrozenGroundThickness
+                //creating Application.FrozenGroundThickness
                 FrozenGroundThickness fg = new FrozenGroundThickness(temp[6],
                         temp[5]);
-                //creating SnowFall
+                //creating Application.SnowFall
                 SnowFall sf = new SnowFall(temp[8], temp[7]);
-                //creating SnowDepth
+                //creating Application.SnowDepth
                 SnowDepth sd = new SnowDepth(temp[10], temp[9]);
-                //creating TMax
+                //creating Application.TMax
                 TMax tMax = new TMax(temp[12], temp[11]);
-                //creating TMin
+                //creating Application.TMin
                 TMin tMin = new TMin(temp[14], temp[13]);
-                //creating PeakWindSpeed
+                //creating Application.PeakWindSpeed
                 PeakWindSpeed pws = new PeakWindSpeed(temp[16], temp[15]);
-                //creating WeatherType
+                //creating Application.WeatherType
                 WeatherType wt = new WeatherType(Arrays.copyOfRange(temp,17,
                         54));
-                //creating WeatherVicinity
+                //creating Application.WeatherVicinity
                 WeatherVicinity wv = new WeatherVicinity(temp[56], temp[55]);
                 //creating record obj
                 Record rec = new Record(s, sd, sf, ac, tMin, tMax, fg, pws,
@@ -75,6 +77,7 @@ public class Database {
             System.out.println("==========GENERAL FACTS ABOUT DATA===========");
             System.out.println(calculateDataFacts(fileName));
             System.out.println("=============================================");
+            reader.close();
 
         } catch (FileNotFoundException e){
             System.err.println("Could not locate " + fileName);
@@ -142,33 +145,43 @@ public class Database {
         long endTime = 0;
         Scanner sc = new Scanner(System.in);
         Sorts<Record> temp = new Sorts<>();
-        String key = sortsSetter(sc);
-        if(key.equals("insertion")){
+        int key = sortsSetter(sc);
+        sc.nextLine();
+        if (key == 1) {
             Comparator<Record> cmp = paramSetter(sc);
             startTime = System.nanoTime();
             temp.insertionSort(cmp, dataArray);
             endTime = System.nanoTime();
-            assert cmp != null;
-            dumpRunStats(endTime, startTime, ((CmpCnt)cmp).getCmpCnt(),
+            dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
                     "O(n^2)");
-            ((CmpCnt)cmp).resetCmpCnt();
-        }
-        if(key.equals("dual-pivot")){
+            ((CmpCnt) cmp).resetCmpCnt();
+        } else if (key == 2) {
             Comparator<Record> cmp = paramSetter(sc);
             startTime = System.nanoTime();
             Arrays.sort(dataArray, cmp);
             endTime = System.nanoTime();
-            assert cmp != null;
-            dumpRunStats(endTime, startTime, ((CmpCnt)cmp).getCmpCnt(),
+            dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
                     "O(nlog(n))");
-            ((CmpCnt)cmp).resetCmpCnt();
+            ((CmpCnt) cmp).resetCmpCnt();
+        } else {
+            System.err.println("Invalid selection, please enter a valid " +
+                    "number");
+            pickSorts();
         }
     }
 
+    /**
+     * Prints statistics associated with a given sort
+     * @param endTime end time recorded in nanoseconds
+     * @param startTime start time recorded in nanoseconds
+     * @param comparisons number of comparisons made
+     * @param complexity worst-case time complexity of a given algorithm
+     */
     private void dumpRunStats(long endTime, long startTime, int comparisons,
                               String complexity) {
         switch(complexity) {
             case "O(n^2)" -> {
+                System.out.printf("N: %d%n", dataArray.length);
                 System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
                         (endTime - startTime) / 1000000);
                 System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
@@ -177,6 +190,7 @@ public class Database {
                         Math.pow(dataArray.length, 2));
             }
             case "O(nlog(n))" -> {
+                System.out.printf("N: %d%n", dataArray.length);
                 System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
                         (endTime - startTime) / 1000000);
                 System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
@@ -192,12 +206,12 @@ public class Database {
      * @param sc user-input
      * @return our sort type
      */
-    private String sortsSetter(Scanner sc){
+    private int sortsSetter(Scanner sc){
         System.out.println("SORTS MENU: (DEVELOPMENT)");
-        System.out.println("\"dual-pivot\" for dual-pivot quick sort");
-        System.out.println("\"insertion\" for insertion sort");
-        System.out.println("\"selection\" for selection sort");
-        return sc.nextLine();
+        System.out.println("[1] for insertion sort");
+        System.out.println("[2] for dual-pivot");
+        System.out.println("[3] selection sort");
+        return sc.nextInt();
     }
 
     /**
@@ -235,10 +249,11 @@ public class Database {
                 System.out.println("Sorting by DATE");
                 return new Record.CmpDate();
             }
-            default -> {
-                return null;
-            }
+            default ->
+                System.err.println("Invalid selection, please enter a valid " +
+                        "sort parameter");
         }
+        return paramSetter(sc);
     }
 
     private static class Sorts<E> {

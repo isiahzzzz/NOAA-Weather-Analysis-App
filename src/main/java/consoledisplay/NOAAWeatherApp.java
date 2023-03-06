@@ -1,3 +1,7 @@
+package consoledisplay;
+
+import applicationcore.Database;
+
 import java.util.Scanner;
 import java.util.stream.Stream;
 
@@ -15,7 +19,7 @@ public class NOAAWeatherApp {
     public void menu(String fileName) {
         Scanner sc = new Scanner(System.in);
         String key;
-        //todo: menu options here.
+
         System.out.println("DEVELOPMENT MENU: ");
         System.out.println("N - CREATE NEW DATABASE FROM FILE");
         System.out.println("P - PRINT MENU");
@@ -23,7 +27,6 @@ public class NOAAWeatherApp {
         System.out.println("Q - QUIT");
         key = sc.next();
         try {
-
             switch (key.toLowerCase()) {
                 case "n":
                     data = new Database(fileName);
@@ -48,6 +51,7 @@ public class NOAAWeatherApp {
                     " from file before continuing");
             menu(fileName);
         }
+        sc.close();
     }
     public void run(String fileName) {
         menu(fileName);

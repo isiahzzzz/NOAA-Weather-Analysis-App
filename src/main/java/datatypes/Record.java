@@ -1,10 +1,12 @@
+package datatypes;
+
 import java.util.Comparator;
 
 /**
  * REVISION HISTORY
  * =============================================================================
  * 1-28-2023 - added compareTo that implements a natural sort (dates) and a
- * sort for TMin, TMax, and snowfall per day. Also added documentation.
+ * sort for Application.TMin, Application.TMax, and snowfall per day. Also added documentation.
  * 1-27-2023 - added getters and setters, no further changes.
  * 1-25-2023 - Created class, default constructor, parameterized constructor,
  * private class members.
@@ -18,7 +20,7 @@ public class Record implements Comparable<Record> {
     private final TMin tmin;
     private final TMax tmax;
     private final FrozenGroundThickness frozenGroundThickness;
-    //private final AverageDailyWindSpeed averageDailyWindSpeed;
+    //private final Application.AverageDailyWindSpeed averageDailyWindSpeed;
     private final PeakWindSpeed peakWindSpeed;
     private final WeatherType weatherType;
     private final WeatherVicinity weatherVicinity;
@@ -82,7 +84,7 @@ public class Record implements Comparable<Record> {
 
     public static class CmpTMax extends CmpCnt implements Comparator<Record>{
         /**
-         * Sorts by TMax temps, sorts highest to lowest
+         * Sorts by Application.TMax temps, sorts highest to lowest
          * @param o1 the first object to be compared.
          * @param o2 the second object to be compared.
          * @return difference
@@ -96,7 +98,7 @@ public class Record implements Comparable<Record> {
 
     public static class CmpTMin extends CmpCnt implements Comparator<Record> {
         /**
-         * Sorts by TMin temps, orders lowest to highest
+         * Sorts by Application.TMin temps, orders lowest to highest
          * @param o1 the first object to be compared.
          * @param o2 the second object to be compared.
          * @return difference
