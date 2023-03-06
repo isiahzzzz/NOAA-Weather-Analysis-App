@@ -356,7 +356,7 @@ public class GUI extends javax.swing.JFrame {
                             file.getAbsolutePath().length() - 1))) {
                 statusLabel.setText("SUCCESS!");
                 statusLabel.setForeground(Color.GREEN);
-                data = new Database(file.getName(), consoleText, statusLabel);
+                data = new Database(file.getName(), getInstance());
                 fileLabel.setText("File: " + file.getName());
             } else {
                 statusLabel.setText("Failure");
@@ -370,20 +370,15 @@ public class GUI extends javax.swing.JFrame {
 
     private void sortButtonActionPerformed(java.awt.event.ActionEvent evt) {
 //GEN-FIRST:event_sortButtonActionPerformed
+            data.pickSorts(algoBox.getSelectedIndex() + 1,
+                    Objects.requireNonNull(sortOptions.getSelectedItem()).toString());
             sortStatusLabel("...sorting!...");
             sortStatusLabel.setForeground(Color.blue);
             sortStatusLabel.setVisible(true);
             sortStatusLabel("sorted!");
-            sortButtonHelper();
 
     }//GEN-LAST:event_sortButtonActionPerformed
-    private void sortButtonHelper() {
-        data.pickSorts(Objects.requireNonNull(algoBox.getSelectedItem()).toString().toLowerCase(), Objects.requireNonNull(sortOptions.getSelectedItem()).toString().toLowerCase(), sortText);
-        for(Record record : data.getDataList()) {
-            model.addRow(new Object[]{record.getStation().getStation(), record.getStation().getDate(), record.getTmax().getTmax()});
-            dataTable.setModel(model);
-        }
-    }
+
 
     /**
      * @param args the command line arguments
@@ -430,6 +425,9 @@ public class GUI extends javax.swing.JFrame {
     }
     public void setSortTextField(String value) {
         sortText.setText(value);
+    }
+    public void setFileTextField(String value) {
+        consoleText.setText(value);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

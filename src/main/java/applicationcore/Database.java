@@ -1,5 +1,7 @@
 package applicationcore; /**
  * REVISION HISTORY
+ * 3-6-2023 - Merged GUI into project, updated Database constructor to work
+ * with GUI and console.
  * 3-6-2023 - Large changes made to packaging structure, tested and working.
  * Adding comments to uncommented methods.
  * 2-23-2023 - Huge overhaul to sort menu, made implementing new sorts far
@@ -17,6 +19,7 @@ package applicationcore; /**
 import au.com.bytecode.opencsv.CSVReader;
 import datatypes.*;
 import datatypes.Record;
+import guipack.GUI;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -26,12 +29,15 @@ import java.util.*;
 public class Database {
     private ArrayList<Record> dataSet;
     private Record[] dataArray;
+    private GUI guiInstance;
 
     /**
      * Initializes database
      * @param fileName filename
+     * @param gui GUI singleton
      */
-    public Database(String fileName) {
+    public Database(String fileName, GUI gui) {
+        this.guiInstance = gui;
         try {
             CSVReader reader = new CSVReader(new FileReader(fileName));
             String[] temp;
@@ -72,12 +78,17 @@ public class Database {
             }
             dataArray = new Record[dataSet.size()];
             dataArray = dataSet.toArray(dataArray);
-            System.out.print("\r");
-            System.out.println("Success! Created database.");
-            System.out.println("==========GENERAL FACTS ABOUT DATA===========");
-            System.out.println(calculateDataFacts(fileName));
-            System.out.println("=============================================");
-            reader.close();
+            //console write for development
+            if(this.guiInstance == null) {
+                System.out.print("\r");
+                System.out.println("Success! Created database.");
+                System.out.println("==========GENERAL FACTS ABOUT DATA===========");
+                System.out.println(calculateDataFacts(fileName));
+                System.out.println("=============================================");
+                reader.close();
+            } else {
+                guiInstance.setFileTextField(calculateDataFacts(fileName));
+            }
 
         } catch (FileNotFoundException e){
             System.err.println("Could not locate " + fileName);
@@ -91,6 +102,7 @@ public class Database {
         }
 
     }
+
 
     /**
      * Calculates some statistics from datafile, could be more efficient.
@@ -140,33 +152,50 @@ public class Database {
     /**
      * Our menu for setting sort algorithm and sort param.
      */
-    public void pickSorts() {
+    public void pickSorts(int algorithm, String param) {
         long startTime = 0;
         long endTime = 0;
-        Scanner sc = new Scanner(System.in);
+        int key = algorithm;
         Sorts<Record> temp = new Sorts<>();
-        int key = sortsSetter(sc);
-        sc.nextLine();
+        Scanner sc = new Scanner(System.in);
+        if(algorithm == 0 && param == null) {
+            key = sortsSetter(sc);
+            sc.nextLine();
+        }
         if (key == 1) {
-            Comparator<Record> cmp = paramSetter(sc);
+            assert param != null;
+            Comparator<Record> cmp = paramSetter(sc, param);
             startTime = System.nanoTime();
             temp.insertionSort(cmp, dataArray);
             endTime = System.nanoTime();
-            dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                    "O(n^2)");
+            //this is to print to console when developing
+            if(guiInstance == null) {
+                System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(n^2)"));
+            } else {
+                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(n^2)"));
+            }
             ((CmpCnt) cmp).resetCmpCnt();
         } else if (key == 2) {
-            Comparator<Record> cmp = paramSetter(sc);
+            assert param != null;
+            Comparator<Record> cmp = paramSetter(sc, param);
             startTime = System.nanoTime();
             Arrays.sort(dataArray, cmp);
             endTime = System.nanoTime();
-            dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                    "O(nlog(n))");
+            //this is to print to console when developing
+            if(guiInstance == null) {
+                System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(nlog(n))"));
+            } else {
+                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(nlog(n))"));
+            }
             ((CmpCnt) cmp).resetCmpCnt();
         } else {
             System.err.println("Invalid selection, please enter a valid " +
                     "number");
-            pickSorts();
+            pickSorts(0, null);
         }
     }
 
@@ -177,28 +206,30 @@ public class Database {
      * @param comparisons number of comparisons made
      * @param complexity worst-case time complexity of a given algorithm
      */
-    private void dumpRunStats(long endTime, long startTime, int comparisons,
+    private String dumpRunStats(long endTime, long startTime, int comparisons,
                               String complexity) {
+        StringBuilder sb = new StringBuilder();
         switch(complexity) {
             case "O(n^2)" -> {
-                System.out.printf("N: %d%n", dataArray.length);
-                System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
-                        (endTime - startTime) / 1000000);
-                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
-                        comparisons);
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        Math.pow(dataArray.length, 2));
+                sb.append(String.format("N: %d%n", dataArray.length));
+                sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
+                        (endTime - startTime) / 1000000));
+                sb.append(String.format("NUMBER OF COMPARISONS MADE: %d%n",
+                        comparisons));
+                sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        Math.pow(dataArray.length, 2)));
             }
             case "O(nlog(n))" -> {
-                System.out.printf("N: %d%n", dataArray.length);
-                System.out.printf("ACTUAL TIME TAKEN: %d milliseconds%n",
-                        (endTime - startTime) / 1000000);
-                System.out.printf("NUMBER OF COMPARISONS MADE: %d%n",
-                        comparisons);
-                System.out.printf("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
-                        dataArray.length * Math.log(dataArray.length));
+                sb.append(String.format("N: %d%n", dataArray.length));
+                sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
+                        (endTime - startTime) / 1000000));
+                sb.append(String.format("NUMBER OF COMPARISONS MADE: %d%n",
+                        comparisons));
+                sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                        dataArray.length * Math.log(dataArray.length)));
             }
         }
+        return sb.toString();
     }
 
     /**
@@ -217,17 +248,20 @@ public class Database {
     /**
      * "Sets" params for sorts.
      * @param sc user input
+     * @param param attrib we are sorting by
      * @return Comparator Object to be sorted by
      */
-    private Comparator<Record> paramSetter(Scanner sc){
+    private Comparator<Record> paramSetter(Scanner sc, String param){
+        String key = param.toLowerCase();
+        if(guiInstance == null) {
+            System.out.println("[tmax] sort data by tmax");
+            System.out.println("[tmin] sort data by tmin");
+            System.out.println("[snow] sort data by snow depth");
+            System.out.println("[wind] sort data by wind speeds");
+            System.out.println("[date] sort data by date");
 
-        System.out.println("[tmax] sort data by tmax");
-        System.out.println("[tmin] sort data by tmin");
-        System.out.println("[snow] sort data by snow depth");
-        System.out.println("[wind] sort data by wind speeds");
-        System.out.println("[date] sort data by date");
-
-        String key = sc.nextLine().trim().toLowerCase();
+            key = sc.nextLine().trim().toLowerCase();
+        }
         switch (key) {
             case "tmax" -> {
                 System.out.println("Sorting by TMAX");
@@ -253,7 +287,7 @@ public class Database {
                 System.err.println("Invalid selection, please enter a valid " +
                         "sort parameter");
         }
-        return paramSetter(sc);
+        return paramSetter(sc, param);
     }
 
     private static class Sorts<E> {
