@@ -1,4 +1,15 @@
-package applicationcore; /**
+package applicationcore;
+
+import datatypes.*;
+import datatypes.Record;
+import guipack.GUI;
+
+import au.com.bytecode.opencsv.CSVReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
+/**
  * REVISION HISTORY
  * 3-6-2023 - Merged GUI into project, updated Database constructor to work
  * with GUI and console.
@@ -16,20 +27,10 @@ package applicationcore; /**
  * private class members.
  * 1-23-2023 - laid out class structure.
  */
-import au.com.bytecode.opencsv.CSVReader;
-import datatypes.*;
-import datatypes.Record;
-import guipack.GUI;
-
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
-
 public class Database {
     private ArrayList<Record> dataSet;
     private Record[] dataArray;
-    private GUI guiInstance;
+    private final GUI guiInstance;
 
     /**
      * Initializes database
