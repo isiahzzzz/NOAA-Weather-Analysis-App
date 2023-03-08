@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import applicationcore.Database;
+import datatypes.Record;
 
 
 /**
@@ -40,6 +41,7 @@ public class GUI extends javax.swing.JFrame {
         sortText.setEditable(false);
         model = (DefaultTableModel)dataTable.getModel();
         homePane.setVisible(false);
+
     }
 
     /**
@@ -251,8 +253,6 @@ public class GUI extends javax.swing.JFrame {
         sortText.setFocusable(false);
         jScrollPane3.setViewportView(sortText);
 
-        sortOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TMAX", "TMIN" }));
-
         sortButton.setText("Sort!");
         sortButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,6 +359,7 @@ public class GUI extends javax.swing.JFrame {
             return;
         }
         statusLabel.setVisible(true);
+        populateTable();
     }//GEN-LAST:event_openFileActionPerformed
 
     private void sortButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -369,7 +370,7 @@ public class GUI extends javax.swing.JFrame {
             sortStatusLabel.setForeground(Color.blue);
             sortStatusLabel.setVisible(true);
             sortStatusLabel("sorted!");
-
+            populateTable();
     }//GEN-LAST:event_sortButtonActionPerformed
 
 
@@ -415,6 +416,25 @@ public class GUI extends javax.swing.JFrame {
     }
     public void sortStatusLabel(String value){
         sortStatusLabel.setText(value);
+    }
+    private void populateTable() {
+        if(model.getDataVector().size() == 0 ) {
+            for (Record record : data.getDataList()) {
+                model.addRow(new Object[]{record.getStation().getStation(),
+                        record.getStation().getDate(),
+                        record.getTmax().getTmax(), record.getTmin().getTmin()});
+                dataTable.setModel(model);
+            }
+            //case if model for dataTable already exists
+        } else {
+            model.getDataVector().clear();
+            for (Record record : data.getDataList()) {
+                model.addRow(new Object[]{record.getStation().getStation(),
+                        record.getStation().getDate(),
+                        record.getTmax().getTmax(), record.getTmin().getTmin()});
+                dataTable.setModel(model);
+            }
+        }
     }
     public void setSortTextField(String value) {
         sortText.setText(value);

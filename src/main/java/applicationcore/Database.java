@@ -150,6 +150,10 @@ public class Database {
         return dataArray;
     }
 
+    public ArrayList<Record> getDataList() {
+        return new ArrayList<>(Arrays.asList(dataArray));
+    }
+
     /**
      * Our menu for setting sort algorithm and sort param.
      */
