@@ -95,7 +95,7 @@ public class Database {
             System.err.println("Could not locate " + fileName);
             System.exit(2);
         } catch (IOException e) {
-            System.err.println("CSVReader Error!");
+            System.err.println("CSVReader Error.");
             System.exit(3);
         } catch (NullPointerException e) {
             System.err.println("Tried to access non-existent data.");
@@ -155,7 +155,9 @@ public class Database {
     }
 
     /**
-     * Our menu for setting sort algorithm and sort param.
+     * Method handles the initialization of sorting.
+     * @param algorithm default 0 [development], greater than 0 otherwise.
+     * @param param null default [development], sort parameter otherwise.
      */
     public void pickSorts(int algorithm, String param) {
         long startTime = 0;
@@ -163,12 +165,11 @@ public class Database {
         int key = algorithm;
         Sorts<Record> temp = new Sorts<>();
         Scanner sc = new Scanner(System.in);
-        if(algorithm == 0 && param == null) {
+        if(guiInstance == null) {
             key = sortsSetter(sc);
             sc.nextLine();
         }
         if (key == 1) {
-            assert param != null;
             Comparator<Record> cmp = paramSetter(sc, param);
             startTime = System.nanoTime();
             temp.insertionSort(cmp, dataArray);
@@ -183,7 +184,6 @@ public class Database {
             }
             ((CmpCnt) cmp).resetCmpCnt();
         } else if (key == 2) {
-            assert param != null;
             Comparator<Record> cmp = paramSetter(sc, param);
             startTime = System.nanoTime();
             Arrays.sort(dataArray, cmp);
@@ -197,6 +197,18 @@ public class Database {
                         "O(nlog(n))"));
             }
             ((CmpCnt) cmp).resetCmpCnt();
+        } else if (key == 3){
+            Comparator<Record> cmp = paramSetter(sc, param);
+            startTime = System.nanoTime();
+            temp.selectionSort(cmp, dataArray);
+            endTime = System.nanoTime();
+            if(guiInstance == null) {
+                System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(n^2)"));
+            } else {
+                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(n^2)"));
+            }
         } else {
             System.err.println("Invalid selection, please enter a valid " +
                     "number");
@@ -216,6 +228,7 @@ public class Database {
         StringBuilder sb = new StringBuilder();
         switch(complexity) {
             case "O(n^2)" -> {
+                sb.append("=====STATS FROM SORT=====").append(System.lineSeparator());
                 sb.append(String.format("N: %d%n", dataArray.length));
                 sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
                         (endTime - startTime) / 1000000));
@@ -225,6 +238,7 @@ public class Database {
                         Math.pow(dataArray.length, 2)));
             }
             case "O(nlog(n))" -> {
+                sb.append("=====STATS FROM SORT=====").append(System.lineSeparator());
                 sb.append(String.format("N: %d%n", dataArray.length));
                 sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
                         (endTime - startTime) / 1000000));
@@ -257,8 +271,8 @@ public class Database {
      * @return Comparator Object to be sorted by
      */
     private Comparator<Record> paramSetter(Scanner sc, String param){
-        String key = param.toLowerCase();
-        if(guiInstance == null) {
+        String key;
+        if(guiInstance == null || param == null) {
             System.out.println("[tmax] sort data by tmax");
             System.out.println("[tmin] sort data by tmin");
             System.out.println("[snow] sort data by snow depth");
@@ -266,6 +280,8 @@ public class Database {
             System.out.println("[date] sort data by date");
 
             key = sc.nextLine().trim().toLowerCase();
+        } else {
+            key = param.toLowerCase();
         }
         switch (key) {
             case "tmax" -> {
@@ -302,10 +318,25 @@ public class Database {
                 int j = i - 1;
                 while (j >= 0 && cmp.compare((Record) dataArray[j],
                         (Record) key) > 0) {
-                        dataArray[j + 1] = dataArray[j];
-                        j = j - 1;
+                    dataArray[j + 1] = dataArray[j];
+                    j = j - 1;
                 }
                 dataArray[j + 1] = key;
+            }
+        }
+
+        public void selectionSort(Comparator<Record> cmp, E[] dataArray) {
+            for (int i = 0; i < dataArray.length - 1; i++) {
+                int index = i;
+                for (int j = i + 1; j < dataArray.length; j++) {
+                    if (cmp.compare((Record) dataArray[index],
+                            (Record) dataArray[j]) < 0) {
+                        index = j;
+                    }
+                }
+                Record smallerElement = (Record) dataArray[index];
+                dataArray[index] = dataArray[i];
+                dataArray[i] = (E) smallerElement;
             }
         }
     }

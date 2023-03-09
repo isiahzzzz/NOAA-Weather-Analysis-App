@@ -35,8 +35,9 @@ public class GUI extends javax.swing.JFrame {
         sortOptions.addItem("Date");
         sortOptions.addItem("Snow");
         sortOptions.addItem("Wind");
-        algoBox.addItem("insertion");
-        algoBox.addItem("dual-pivot");
+        algoBox.addItem("Insertion");
+        algoBox.addItem("Dual-pivot");
+        algoBox.addItem("Selection");
         consoleText.setEditable(false);
         sortText.setEditable(false);
         model = (DefaultTableModel)dataTable.getModel();
@@ -122,7 +123,7 @@ public class GUI extends javax.swing.JFrame {
 
         homePane.setEnabled(false);
 
-        titleLabel.setText("NOAA WEATHER APP V1.0.0");
+        titleLabel.setText("NOAA WEATHER APP V1.1.0 MAR723");
 
         authorLabel.setText("Written by Isiah Castro");
 

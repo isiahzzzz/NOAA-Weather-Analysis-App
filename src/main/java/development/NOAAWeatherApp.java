@@ -65,7 +65,6 @@ public class NOAAWeatherApp {
         NOAAWeatherApp driver = new NOAAWeatherApp();
         if(args.length == 0){
             System.err.println("usage: program args -> filename");
-            //System.exit 1 -- BAD FILE ARGS
             System.exit(1);
         } else {
             driver.run(args[0]);
