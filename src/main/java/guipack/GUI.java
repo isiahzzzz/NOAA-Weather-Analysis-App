@@ -16,6 +16,7 @@ import datatypes.Record;
  *
  * @author isiahcastro
  */
+//todo: add functionality that allows the changing of the dataTable rows
 public class GUI extends javax.swing.JFrame {
 
     /**
@@ -123,7 +124,7 @@ public class GUI extends javax.swing.JFrame {
 
         homePane.setEnabled(false);
 
-        titleLabel.setText("NOAA WEATHER APP V1.1.0 MAR723");
+        titleLabel.setText("0.2.0-DEVELOPMENT/GUI/MAR823");
 
         authorLabel.setText("Written by Isiah Castro");
 

@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>NOAAWeatherApp</artifactId>
-    <version>0.1.1-CONSOLE</version>
+    <version>0.2.0-DEVELOPMENT/GUI/MAR823</version>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
