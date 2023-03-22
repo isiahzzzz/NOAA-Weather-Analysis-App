@@ -111,6 +111,9 @@ public class Record implements Comparable<Record> {
         }
     }
 
+    /**
+     * todo: fix snow fall sort issues.
+     */
     public static class CmpSnowFallHiLow extends CmpCnt implements Comparator<Record> {
         /**
          * Sorts by daily snowfall amounts, high to low.

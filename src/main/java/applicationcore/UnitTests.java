@@ -157,5 +157,9 @@ public class UnitTests {
         assertEquals("Station: NONE Date: Wed Dec 31 18:59:59 EST 1969",
                 testNan.toString());
     } */
+
+    /**
+     * todo: write unit test for snow depth sort
+     */
 }
 

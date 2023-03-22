@@ -72,8 +72,10 @@ public class GUI extends javax.swing.JFrame {
         consoleText = new javax.swing.JTextArea();
         fileLabel = new javax.swing.JLabel();
         viewData = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
+        tablePane = new javax.swing.JScrollPane();
         dataTable = new javax.swing.JTable();
+        displayChecked = new javax.swing.JCheckBox();
+        refreshButton = new javax.swing.JButton();
         sortsPane = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         sortText = new javax.swing.JTextArea();
@@ -124,7 +126,7 @@ public class GUI extends javax.swing.JFrame {
 
         homePane.setEnabled(false);
 
-        titleLabel.setText("0.2.0-DEVELOPMENT/GUI/MAR823");
+        titleLabel.setText("NOAA WEATHER APP V1.0.0");
 
         authorLabel.setText("Written by Isiah Castro");
 
@@ -156,7 +158,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(authorLabel)
                 .addGap(31, 31, 31)
                 .addComponent(moreInformationButton)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         mainPane.addTab("Home", homePane);
@@ -207,7 +209,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(openFile)
                 .addGap(24, 24, 24)
                 .addComponent(statusLabel)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadFilePaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fileLabel)
@@ -229,7 +231,16 @@ public class GUI extends javax.swing.JFrame {
         dataTable.setSelectionBackground(new java.awt.Color(62, 200, 225));
         dataTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         dataTable.setShowGrid(true);
-        jScrollPane5.setViewportView(dataTable);
+        tablePane.setViewportView(dataTable);
+
+        displayChecked.setText("Display Alll Fields");
+
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout viewDataLayout = new javax.swing.GroupLayout(viewData);
         viewData.setLayout(viewDataLayout);
@@ -237,14 +248,24 @@ public class GUI extends javax.swing.JFrame {
             viewDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(viewDataLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
+                .addGroup(viewDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
+                    .addGroup(viewDataLayout.createSequentialGroup()
+                        .addComponent(displayChecked)
+                        .addGap(18, 18, 18)
+                        .addComponent(refreshButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         viewDataLayout.setVerticalGroup(
             viewDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(viewDataLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewDataLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addGroup(viewDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(displayChecked)
+                    .addComponent(refreshButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tablePane, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -299,7 +320,7 @@ public class GUI extends javax.swing.JFrame {
             sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sortsPaneLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
             .addGroup(sortsPaneLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
@@ -375,6 +396,16 @@ public class GUI extends javax.swing.JFrame {
             populateTable();
     }//GEN-LAST:event_sortButtonActionPerformed
 
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        // TODO add your handling code here:
+        if(displayChecked.isSelected()){
+            model.addColumn("Wind Speed");
+            model.addColumn("Snow Depth");
+        } else {
+
+        }
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -420,21 +451,47 @@ public class GUI extends javax.swing.JFrame {
         sortStatusLabel.setText(value);
     }
     private void populateTable() {
-        if(model.getDataVector().size() == 0 ) {
-            for (Record record : data.getDataList()) {
-                model.addRow(new Object[]{record.getStation().getStation(),
-                        record.getStation().getDate(),
-                        record.getTmax().getTmax(), record.getTmin().getTmin()});
-                dataTable.setModel(model);
+        if(!displayChecked.isSelected()) {
+            if (model.getDataVector().size() == 0) {
+                for (Record record : data.getDataList()) {
+                    model.addRow(new Object[]{record.getStation().getStation(),
+                            record.getStation().getDate(),
+                            record.getTmax().getTmax(), record.getTmin().getTmin()});
+                    dataTable.setModel(model);
+                }
+                //case if model for dataTable already exists
+            } else {
+                model.getDataVector().clear();
+                for (Record record : data.getDataList()) {
+                    model.addRow(new Object[]{record.getStation().getStation(),
+                            record.getStation().getDate(),
+                            record.getTmax().getTmax(), record.getTmin().getTmin()});
+                    dataTable.setModel(model);
+                }
             }
-            //case if model for dataTable already exists
         } else {
-            model.getDataVector().clear();
-            for (Record record : data.getDataList()) {
-                model.addRow(new Object[]{record.getStation().getStation(),
-                        record.getStation().getDate(),
-                        record.getTmax().getTmax(), record.getTmin().getTmin()});
-                dataTable.setModel(model);
+            if (model.getDataVector().size() == 0) {
+                for (Record record : data.getDataList()) {
+                    model.addRow(new Object[]{record.getStation().getStation(),
+                            record.getStation().getDate(),
+                            record.getTmax().getTmax(),
+                            record.getTmin().getTmin(),
+                            record.getPeakWindSpeed().getPeakWindSpeed(),
+                            record.getSnowDepth().getSnowDepth(),
+                            });
+                    dataTable.setModel(model);
+                }
+                //case if model for dataTable already exists
+            } else {
+                model.getDataVector().clear();
+                for (Record record : data.getDataList()) {
+                    model.addRow(new Object[]{record.getStation().getStation(),
+                            record.getStation().getDate(),
+                            record.getTmax().getTmax(), record.getTmin().getTmin(),
+                            record.getPeakWindSpeed().getPeakWindSpeed(),
+                            record.getSnowDepth().getSnowDepth()});
+                    dataTable.setModel(model);
+                }
             }
         }
     }
@@ -452,6 +509,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextArea consoleText;
     private javax.swing.JLabel csvLabel;
     private javax.swing.JTable dataTable;
+    private javax.swing.JCheckBox displayChecked;
     private javax.swing.JLabel fileLabel;
     private javax.swing.JPanel homePane;
     private javax.swing.JPanel infoPane;
@@ -459,18 +517,19 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JPanel loadFilePane;
     private javax.swing.JTabbedPane mainPane;
     private javax.swing.JDialog moreInfo;
     private javax.swing.JButton openFile;
     private javax.swing.JLabel paramLabel;
+    private javax.swing.JButton refreshButton;
     private javax.swing.JButton sortButton;
     private javax.swing.JComboBox<String> sortOptions;
     private javax.swing.JLabel sortStatusLabel;
     private javax.swing.JTextArea sortText;
     private javax.swing.JPanel sortsPane;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.JScrollPane tablePane;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel viewData;
     // End of variables declaration//GEN-END:variables
