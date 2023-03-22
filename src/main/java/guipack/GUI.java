@@ -1,10 +1,11 @@
 package guipack;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import java.awt.Color;
+
+import java.awt.*;
 import java.io.File;
 import java.util.Objects;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -43,7 +44,6 @@ public class GUI extends javax.swing.JFrame {
         sortText.setEditable(false);
         model = (DefaultTableModel)dataTable.getModel();
         homePane.setVisible(false);
-
     }
 
     /**
@@ -123,6 +123,7 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NOAA WEATHER APP");
+        setIconImage(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/src/main/java/icons/50x50docico.png").getImage());
 
         homePane.setEnabled(false);
 
@@ -130,7 +131,9 @@ public class GUI extends javax.swing.JFrame {
 
         authorLabel.setText("Written by Isiah Castro");
 
-        moreInformationButton.setText("More Information");
+        moreInformationButton.setIcon(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/icons/50x50docico.png")); // NOI18N
+        moreInformationButton.setToolTipText("");
+        moreInformationButton.setPreferredSize(new java.awt.Dimension(50, 50));
         moreInformationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moreInformationButtonActionPerformed(evt);
@@ -144,7 +147,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(homePaneLayout.createSequentialGroup()
                 .addGap(286, 286, 286)
                 .addGroup(homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(moreInformationButton)
+                    .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(titleLabel)
                     .addComponent(authorLabel))
                 .addContainerGap(345, Short.MAX_VALUE))
@@ -157,14 +160,15 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(authorLabel)
                 .addGap(31, 31, 31)
-                .addComponent(moreInformationButton)
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainPane.addTab("Home", homePane);
 
         csvLabel.setText("Choose a CSV");
 
+        openFile.setIcon(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/icons/folder.png")); // NOI18N
         openFile.setText("Open File");
         openFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,7 +201,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(loadFilePaneLayout.createSequentialGroup()
                         .addComponent(fileLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
                 .addContainerGap())
         );
         loadFilePaneLayout.setVerticalGroup(
@@ -209,7 +213,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(openFile)
                 .addGap(24, 24, 24)
                 .addComponent(statusLabel)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadFilePaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fileLabel)
@@ -235,7 +239,10 @@ public class GUI extends javax.swing.JFrame {
 
         displayChecked.setText("Display Alll Fields");
 
+        refreshButton.setIcon(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/icons/refresh.gif")); // NOI18N
         refreshButton.setText("Refresh");
+        refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        refreshButton.setIconTextGap(10);
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshButtonActionPerformed(evt);
@@ -249,7 +256,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(viewDataLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(viewDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
+                    .addComponent(tablePane)
                     .addGroup(viewDataLayout.createSequentialGroup()
                         .addComponent(displayChecked)
                         .addGap(18, 18, 18)
@@ -320,7 +327,7 @@ public class GUI extends javax.swing.JFrame {
             sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sortsPaneLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
             .addGroup(sortsPaneLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
@@ -354,9 +361,6 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void moreInformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreInformationButtonActionPerformed
-        moreInfo.setVisible(true);
-    }//GEN-LAST:event_moreInformationButtonActionPerformed
     private void openFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileActionPerformed
         // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
@@ -405,6 +409,10 @@ public class GUI extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void moreInformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreInformationButtonActionPerformed
+        moreInfo.setVisible(true);
+    }//GEN-LAST:event_moreInformationButtonActionPerformed
 
 
     /**
@@ -536,6 +544,6 @@ public class GUI extends javax.swing.JFrame {
     private Database data;
     private DefaultTableModel model;
     private static GUI GUI_INSTANCE = null;
-    
+
 }
 
