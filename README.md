@@ -7,7 +7,7 @@
   Secondly, this application functions as a historical weather data analysis tool. Once a user parses a NOAA weather file, the data will be displayed in a table (see bellow).
   
   <p align="center">
-  <img src="https://raw.githubusercontent.com/isiahzzzz/NOAAWeatherApp/master/screenshots/table.png?token=GHSAT0AAAAAAB6S3ZTGPUEZI7WWBQLNIY5OZA423IA" />
+  <img src="https://raw.githubusercontent.com/isiahzzzz/NOAAWeatherApp/master/screenshots/table.png?token=GHSAT0AAAAAAB6S3ZTGMXC3HCRH6TEMMKFQZA43BQA" />
 </p>
 
 ### Navigating the Project
