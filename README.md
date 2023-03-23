@@ -30,7 +30,7 @@
 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/isiahzzzz/NOAAWeatherApp/master/icons/draft_nwa.png?token=GHSAT0AAAAAAB6S3ZTG4LP4AXRNHBDRLJ4CZA4ZB5Q" />
+  <img src="https://raw.githubusercontent.com/isiahzzzz/NOAAWeatherApp/master/icons/draft_nwa.png?token=GHSAT0AAAAAAB6S3ZTGBE4CKDIZPICRVYJ2ZA43B6Q" />
 </p>
 
 
