@@ -7,7 +7,7 @@
   Secondly, this application functions as a historical weather data analysis tool. Once a user parses a NOAA weather file, the data will be displayed in a table (see bellow).
   
   <p align="center">
-  <img src="table![image](https://user-images.githubusercontent.com/63986603/227383377-b1d5f36d-ce56-45bc-aa1f-71b1c74ad24a.png)" />
+  <img src="https://user-images.githubusercontent.com/63986603/227383377-b1d5f36d-ce56-45bc-aa1f-71b1c74ad24a.png" />
 </p>
 
 ### Navigating the Project
@@ -30,7 +30,7 @@
 
 
 <p align="center">
-  <img src="draft_nwa.png![image](https://user-images.githubusercontent.com/63986603/227383412-c24b4ecb-da21-4d97-a495-e580836d344f.png)" />
+  <img src="https://user-images.githubusercontent.com/63986603/227383412-c24b4ecb-da21-4d97-a495-e580836d344f.png" />
 </p>
 
 
