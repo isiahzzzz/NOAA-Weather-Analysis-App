@@ -123,7 +123,8 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NOAA WEATHER APP");
-        setIconImage(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/src/main/java/icons/50x50docico.png").getImage());
+        setIconImage(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop" +
+                "/NOAAWeatherApp/src/main/java/icons/50x50docico.png").getImage());
 
         homePane.setEnabled(false);
 
@@ -131,7 +132,8 @@ public class GUI extends javax.swing.JFrame {
 
         authorLabel.setText("Written by Isiah Castro");
 
-        moreInformationButton.setIcon(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/icons/50x50docico.png")); // NOI18N
+        moreInformationButton.setIcon(new javax.swing.ImageIcon("/Users" +
+                "/isiahcastro/Desktop/NOAAWeatherApp/icons/50x50docico.png")); // NOI18N
         moreInformationButton.setToolTipText("");
         moreInformationButton.setPreferredSize(new java.awt.Dimension(50, 50));
         moreInformationButton.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +241,6 @@ public class GUI extends javax.swing.JFrame {
 
         displayChecked.setText("Display Alll Fields");
 
-        refreshButton.setIcon(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/icons/refresh.gif")); // NOI18N
         refreshButton.setText("Refresh");
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         refreshButton.setIconTextGap(10);
@@ -271,8 +272,8 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(viewDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(displayChecked)
                     .addComponent(refreshButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tablePane, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
