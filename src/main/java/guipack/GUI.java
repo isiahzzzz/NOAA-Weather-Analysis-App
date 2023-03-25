@@ -26,7 +26,6 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         FlatIntelliJLaf.setup();
         initComponents();
-        sortStatusLabel.setVisible(false);
         dataTable.setEnabled(false);
         infoText.setEditable(false);
         infoText.setLineWrap(true);
@@ -61,8 +60,6 @@ public class GUI extends javax.swing.JFrame {
         infoText = new javax.swing.JTextArea();
         mainPane = new javax.swing.JTabbedPane();
         homePane = new javax.swing.JPanel();
-        titleLabel = new javax.swing.JLabel();
-        authorLabel = new javax.swing.JLabel();
         javax.swing.JButton moreInformationButton = new javax.swing.JButton();
         loadFilePane = new javax.swing.JPanel();
         csvLabel = new javax.swing.JLabel();
@@ -84,7 +81,6 @@ public class GUI extends javax.swing.JFrame {
         paramLabel = new javax.swing.JLabel();
         algoBox = new javax.swing.JComboBox<>();
         algoLabel = new javax.swing.JLabel();
-        sortStatusLabel = new javax.swing.JLabel();
 
         moreInfo.setSize(new java.awt.Dimension(500, 500));
 
@@ -123,19 +119,17 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NOAA WEATHER APP");
-        setIconImage(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop" +
-                "/NOAAWeatherApp/src/main/java/icons/50x50docico.png").getImage());
+        setIconImage(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/src/main/java/icons/50x50docico.png").getImage());
 
         homePane.setEnabled(false);
 
-        titleLabel.setText("NOAA WEATHER APP V1.0.0");
-
-        authorLabel.setText("Written by Isiah Castro");
-
-        moreInformationButton.setIcon(new javax.swing.ImageIcon("/Users" +
-                "/isiahcastro/Desktop/NOAAWeatherApp/icons/50x50docico.png")); // NOI18N
-        moreInformationButton.setToolTipText("");
-        moreInformationButton.setPreferredSize(new java.awt.Dimension(50, 50));
+        moreInformationButton.setText(" ");
+        moreInformationButton.setToolTipText("click for more information!");
+        moreInformationButton.setFocusPainted(false);
+        moreInformationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        moreInformationButton.setMaximumSize(new java.awt.Dimension(125, 125));
+        moreInformationButton.setMinimumSize(new java.awt.Dimension(125, 125));
+        moreInformationButton.setPreferredSize(new java.awt.Dimension(512, 512));
         moreInformationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 moreInformationButtonActionPerformed(evt);
@@ -147,30 +141,22 @@ public class GUI extends javax.swing.JFrame {
         homePaneLayout.setHorizontalGroup(
             homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePaneLayout.createSequentialGroup()
-                .addGap(286, 286, 286)
-                .addGroup(homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleLabel)
-                    .addComponent(authorLabel))
-                .addContainerGap(345, Short.MAX_VALUE))
+                .addGap(268, 268, 268)
+                .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(289, Short.MAX_VALUE))
         );
         homePaneLayout.setVerticalGroup(
             homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(homePaneLayout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(titleLabel)
-                .addGap(18, 18, 18)
-                .addComponent(authorLabel)
-                .addGap(31, 31, 31)
-                .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(111, 111, 111)
+                .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         mainPane.addTab("Home", homePane);
 
         csvLabel.setText("Choose a CSV");
 
-        openFile.setIcon(new javax.swing.ImageIcon("/Users/isiahcastro/Desktop/NOAAWeatherApp/icons/folder.png")); // NOI18N
         openFile.setText("Open File");
         openFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,7 +189,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(loadFilePaneLayout.createSequentialGroup()
                         .addComponent(fileLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 616, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE))
                 .addContainerGap())
         );
         loadFilePaneLayout.setVerticalGroup(
@@ -215,7 +201,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(openFile)
                 .addGap(24, 24, 24)
                 .addComponent(statusLabel)
-                .addContainerGap(162, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadFilePaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fileLabel)
@@ -273,7 +259,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(displayChecked)
                     .addComponent(refreshButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                .addComponent(tablePane, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -297,30 +283,26 @@ public class GUI extends javax.swing.JFrame {
         algoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         algoLabel.setText("Algorithm");
 
-        sortStatusLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sortStatusLabel.setText("NULL");
-
         javax.swing.GroupLayout sortsPaneLayout = new javax.swing.GroupLayout(sortsPane);
         sortsPane.setLayout(sortsPaneLayout);
         sortsPaneLayout.setHorizontalGroup(
             sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sortsPaneLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(sortsPaneLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(sortOptions, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(paramLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(algoBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(algoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(algoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))
                     .addGroup(sortsPaneLayout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(sortStatusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(sortButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(53, 53, 53)
+                        .addComponent(sortButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -328,7 +310,7 @@ public class GUI extends javax.swing.JFrame {
             sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sortsPaneLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
                 .addGap(6, 6, 6))
             .addGroup(sortsPaneLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
@@ -339,9 +321,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sortOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(algoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(sortStatusLabel)
-                .addGap(27, 27, 27)
+                .addGap(126, 126, 126)
                 .addComponent(sortButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -356,7 +336,9 @@ public class GUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPane)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPane, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -391,23 +373,28 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_openFileActionPerformed
 
     private void sortButtonActionPerformed(java.awt.event.ActionEvent evt) {
+            
+            
 //GEN-FIRST:event_sortButtonActionPerformed
             data.pickSorts(algoBox.getSelectedIndex() + 1,
                     Objects.requireNonNull(sortOptions.getSelectedItem()).toString());
-            sortStatusLabel("...sorting!...");
-            sortStatusLabel.setForeground(Color.blue);
-            sortStatusLabel.setVisible(true);
-            sortStatusLabel("sorted!");
             populateTable();
     }//GEN-LAST:event_sortButtonActionPerformed
 
+    /**
+     * Handles refreshing the table when user wants to show extra data.
+     * @param evt not used
+     */
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
-        // TODO add your handling code here:
-        if(displayChecked.isSelected()){
+        //shows extra data
+        if(displayChecked.isSelected() && !isDataShown){
             model.addColumn("Wind Speed");
             model.addColumn("Snow Depth");
-        } else {
-
+            isDataShown = true;
+        //removes extra data
+        } else if (!displayChecked.isSelected() && isDataShown) {
+            model.setColumnCount(4);
+            isDataShown = false;
         }
     }//GEN-LAST:event_refreshButtonActionPerformed
 
@@ -450,15 +437,20 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
+
+    /**
+     * Generates a new GUI singleton used for changing GUI from outside this
+     * class.
+     * @return new GUI object if object doesn't exist, current GUI object
+     * otherwise.
+     */
     public static GUI getInstance(){
         if(GUI_INSTANCE == null){
             GUI_INSTANCE = new GUI();
         }
         return GUI_INSTANCE;
     }
-    public void sortStatusLabel(String value){
-        sortStatusLabel.setText(value);
-    }
+
     private void populateTable() {
         if(!displayChecked.isSelected()) {
             if (model.getDataVector().size() == 0) {
@@ -514,7 +506,6 @@ public class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> algoBox;
     private javax.swing.JLabel algoLabel;
-    private javax.swing.JLabel authorLabel;
     private javax.swing.JTextArea consoleText;
     private javax.swing.JLabel csvLabel;
     private javax.swing.JTable dataTable;
@@ -534,17 +525,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton sortButton;
     private javax.swing.JComboBox<String> sortOptions;
-    private javax.swing.JLabel sortStatusLabel;
     private javax.swing.JTextArea sortText;
     private javax.swing.JPanel sortsPane;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JScrollPane tablePane;
-    private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel viewData;
     // End of variables declaration//GEN-END:variables
     private Database data;
     private DefaultTableModel model;
     private static GUI GUI_INSTANCE = null;
+    private boolean isDataShown = false;
 
 }
 
