@@ -28,8 +28,11 @@ import java.util.*;
  * 1-23-2023 - laid out class structure.
  */
 public class Database {
+    // original list that's populated post file parse
     private ArrayList<Record> dataSet;
+    // array that is used for sort performance recording
     private Record[] dataArray;
+    // gui singleton
     private final GUI guiInstance;
 
     /**
@@ -311,7 +314,16 @@ public class Database {
         return paramSetter(sc, param);
     }
 
+    /**
+     * Embedded class that contains sorts
+     * @param <E>
+     */
     private static class Sorts<E> {
+        /**
+         * Insertion Sort that uses custom Comparator
+         * @param cmp Comparator
+         * @param dataArray array to be modified
+         */
         public void insertionSort(Comparator<Record> cmp, E[] dataArray) {
             for (int i = 1; i < dataArray.length; ++i) {
                 E key = dataArray[i];
@@ -325,6 +337,11 @@ public class Database {
             }
         }
 
+        /**
+         *  Selection Sort that uses custom Comparator
+         * @param cmp Comparator
+         * @param dataArray array to be modified
+         */
         public void selectionSort(Comparator<Record> cmp, E[] dataArray) {
             for (int i = 0; i < dataArray.length - 1; i++) {
                 int index = i;
