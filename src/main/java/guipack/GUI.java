@@ -140,7 +140,7 @@ public class GUI extends javax.swing.JFrame {
         headerLabel.setText("Written by Isiah Castro");
 
         versionLabel.setForeground(new java.awt.Color(255, 0, 0));
-        versionLabel.setText("V1.1.0");
+        versionLabel.setText("V1.1.2");
 
         javax.swing.GroupLayout homePaneLayout = new javax.swing.GroupLayout(homePane);
         homePane.setLayout(homePaneLayout);
@@ -352,9 +352,7 @@ public class GUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(mainPane, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(mainPane, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         getAccessibleContext().setAccessibleDescription("NOAA WEATHER APP");
