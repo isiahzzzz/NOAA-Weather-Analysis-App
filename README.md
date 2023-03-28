@@ -33,5 +33,9 @@
   <img src="https://user-images.githubusercontent.com/63986603/227383412-c24b4ecb-da21-4d97-a495-e580836d344f.png" />
 </p>
 
+### Build and Compile
+
+For the release verison of the program, you will need Java JDK 18.0.2 installed or higher. To compile the project yourself, clone the repo, select a JDK >= 18.0.1, and set the main class to guipack.GUI.
+
 
 *GPL-3.0-or-later*
