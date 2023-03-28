@@ -5,9 +5,6 @@ import applicationcore.Database;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-/**
- * REVISION HISTORY
- */
 public class NOAAWeatherApp {
 
     private Database data;
@@ -53,12 +50,17 @@ public class NOAAWeatherApp {
         }
         sc.close();
     }
+
+    /**
+     * Used in conjunction with main, not used with GUI or development branch
+     * @param fileName absolute file path
+     */
     public void run(String fileName) {
         menu(fileName);
     }
 
     /**
-     *
+     * Only used for testing
      * @param args filepath
      */
     public static void main(String[] args){
