@@ -379,7 +379,6 @@ public class GUI extends javax.swing.JFrame {
         if(file == null) {
             return;
         }
-
         try {
             //checking to see if file is csv
             if (!"csv".equalsIgnoreCase(file.getAbsolutePath()
