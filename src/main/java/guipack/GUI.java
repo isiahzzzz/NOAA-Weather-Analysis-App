@@ -241,7 +241,7 @@ public class GUI extends javax.swing.JFrame {
         dataTable.setShowGrid(true);
         tablePane.setViewportView(dataTable);
 
-        displayChecked.setText("Display All Fields");
+        displayChecked.setText("Display Alll Fields");
 
         refreshButton.setText("Refresh");
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
