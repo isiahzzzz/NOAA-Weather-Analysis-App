@@ -241,7 +241,7 @@ public class GUI extends javax.swing.JFrame {
         dataTable.setShowGrid(true);
         tablePane.setViewportView(dataTable);
 
-        displayChecked.setText("Display Alll Fields");
+        displayChecked.setText("Display All Fields");
 
         refreshButton.setText("Refresh");
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -368,12 +368,18 @@ public class GUI extends javax.swing.JFrame {
     private void openFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileActionPerformed
         //file browser that opens
         JFileChooser chooser = new JFileChooser();
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         //sets filter on file types
         chooser.setFileFilter(new FileNameExtensionFilter("CSV FILES", "csv"));
         //opens file browser
         chooser.showOpenDialog(mainPane);
         //gets selected file path
         File file = chooser.getSelectedFile();
+        //case if user clicks out of File Browser without using cancel.
+        if(file == null) {
+            return;
+        }
+
         try {
             //checking to see if file is csv
             if (!"csv".equalsIgnoreCase(file.getAbsolutePath()
@@ -390,6 +396,7 @@ public class GUI extends javax.swing.JFrame {
         } catch (NullPointerException e) {
             System.err.println("error in opening file");
             System.exit(5);
+            loadFilePane.setVisible(true);
             return;
         }
         statusLabel.setVisible(true);
