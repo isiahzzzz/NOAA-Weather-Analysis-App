@@ -320,7 +320,7 @@ public class Database {
      */
     private static class Sorts<E> {
         /**
-         * Insertion Sort that uses custom Comparator
+         * Insertion Sort
          * @param cmp Comparator
          * @param dataArray array to be modified
          */
@@ -338,7 +338,7 @@ public class Database {
         }
 
         /**
-         *  Selection Sort that uses custom Comparator
+         *  Selection Sort
          * @param cmp Comparator
          * @param dataArray array to be modified
          */
@@ -354,6 +354,37 @@ public class Database {
                 Record smallerElement = (Record) dataArray[index];
                 dataArray[index] = dataArray[i];
                 dataArray[i] = (E) smallerElement;
+            }
+        }
+
+        public void mergeSort(Comparator<Record> cmp, E[] dataArray, int n) {
+            if (n < 2) {
+                return;
+            }
+            int mid = n / 2;
+            E[] leftSide = (E[]) new Record[mid];
+            E[] rightSide = (E[]) new Record[n - mid];
+
+            for (int i = 0; i < mid; i++) {
+                leftSide[i] = dataArray[i];
+            }
+
+            for (int i = mid; i < n; i++) {
+                rightSide[i - mid] = dataArray[i];
+            }
+
+        }
+        private void merge(E[] dataArray, E[] leftSide, E[] rightSide, int left, int right, Comparator<Record> cmp) {
+            int i = 0;
+            int j = 0;
+            int k = 0;
+
+            while(i < left && j < right) {
+                if(cmp.compare((Record) leftSide[i], (Record) rightSide[i]) <= 0 ) {
+                    dataArray[k++] = leftSide[i++];
+                } else {
+                    dataArray[k++] = rightSide[j++];
+                }
             }
         }
     }
