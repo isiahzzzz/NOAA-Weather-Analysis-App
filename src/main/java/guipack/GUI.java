@@ -386,7 +386,7 @@ public class GUI extends javax.swing.JFrame {
                             file.getAbsolutePath().length() - 1))) {
                 statusLabel.setText("SUCCESS!");
                 statusLabel.setForeground(Color.GREEN);
-                data = new Database(file.getName(), getInstance());
+                data = new Database(file.getAbsolutePath(), getInstance());
                 fileLabel.setText("File: " + file.getName());
             } else {
                 statusLabel.setText("Failure");
