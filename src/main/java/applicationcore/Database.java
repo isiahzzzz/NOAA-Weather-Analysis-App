@@ -357,6 +357,12 @@ public class Database {
             }
         }
 
+        /**
+         * Insertion Sort
+         * @param cmp Comparator
+         * @param dataArray array to be modified during the sort
+         * @param n recursion control variable
+         */
         public void mergeSort(Comparator<Record> cmp, E[] dataArray, int n) {
             if (n < 2) {
                 return;
@@ -372,6 +378,8 @@ public class Database {
             for (int i = mid; i < n; i++) {
                 rightSide[i - mid] = dataArray[i];
             }
+            mergeSort(cmp, leftSide, mid);
+            mergeSort(cmp, rightSide, n - mid);
 
         }
         private void merge(E[] dataArray, E[] leftSide, E[] rightSide, int left, int right, Comparator<Record> cmp) {
@@ -385,6 +393,12 @@ public class Database {
                 } else {
                     dataArray[k++] = rightSide[j++];
                 }
+            }
+            while(i < left) {
+                dataArray[k++] = leftSide[i++];
+            }
+            while(j < right) {
+                dataArray[k++] = rightSide[j++];
             }
         }
     }
