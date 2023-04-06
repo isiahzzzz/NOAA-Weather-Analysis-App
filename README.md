@@ -1,5 +1,3 @@
-![GitHub branch checks state](https://img.shields.io/github/checks-status/isiahzzzz/NOAA-Weather-Analysis-App/master?style=flat-square)
-
 # NOAA Weather Analysis Application
 
 ### Introduction
