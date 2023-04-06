@@ -143,12 +143,6 @@ public class Database {
         return new ArrayList<>(Arrays.asList(dataArray));
     }
 
-    protected void trimArrayForTest(int size) {
-        Record[] temp = new Record[size];
-        System.arraycopy(dataArray, 0, temp, 0, size);
-        dataArray = temp;
-    }
-
     /**
      * Method handles the initialization of sorting.
      * @param algorithm default 0 [development], greater than 0 otherwise.
@@ -214,10 +208,10 @@ public class Database {
             if(guiInstance == null) {
                 if(!JUnitTest)
                     System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(n^2)"));
+                            "O(nlog(n))"));
             } else {
                 guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(n^2)"));
+                        "O(nlog(n))"));
             }
 
         } else {
@@ -234,7 +228,7 @@ public class Database {
      * @param comparisons number of comparisons
      * @param complexity expected time complexity
      */
-    private void handleDump(long endTime, long startTime, int comparisons, String complexity){
+    private void dumpHandler(long endTime, long startTime, int comparisons, String complexity){
 
     }
 
@@ -334,6 +328,16 @@ public class Database {
     }
 
     /**
+     * Used only when unit testing array sorts for a smaller sample pool.
+     * @param size size that array will be trimmed to
+     */
+    protected void trimArrayForTest(int size) {
+        Record[] temp = new Record[size];
+        System.arraycopy(dataArray, 0, temp, 0, size);
+        dataArray = temp;
+    }
+
+    /**
      * Embedded class that contains sorts
      * @param <E>
      */
@@ -366,7 +370,7 @@ public class Database {
                 int index = i;
                 for (int j = i + 1; j < dataArray.length; j++) {
                     if (cmp.compare((Record) dataArray[index],
-                            (Record) dataArray[j]) < 0) {
+                            (Record) dataArray[j])> 0) {
                         index = j;
                     }
                 }
@@ -399,7 +403,7 @@ public class Database {
 
         /**
          * Recursive Merge
-         * @param arr data array
+         * @param arr array of records
          * @param l left index
          * @param m middle index
          * @param r right index

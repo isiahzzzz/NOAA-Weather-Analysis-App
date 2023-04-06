@@ -121,7 +121,7 @@ public class GUI extends javax.swing.JFrame {
         setTitle("NOAA WEATHER APP");
         setIconImages(null);
         setMaximumSize(new java.awt.Dimension(1000, 1000));
-        setPreferredSize(new java.awt.Dimension(705, 430));
+        setPreferredSize(new java.awt.Dimension(730, 440));
 
         homePane.setEnabled(false);
 
@@ -141,7 +141,7 @@ public class GUI extends javax.swing.JFrame {
         headerLabel.setText("Written by Isiah Castro");
 
         versionLabel.setForeground(new java.awt.Color(255, 0, 0));
-        versionLabel.setText("V1.1.2");
+        versionLabel.setText("V1.2.0");
 
         javax.swing.GroupLayout homePaneLayout = new javax.swing.GroupLayout(homePane);
         homePane.setLayout(homePaneLayout);
@@ -242,7 +242,7 @@ public class GUI extends javax.swing.JFrame {
         dataTable.setShowGrid(true);
         tablePane.setViewportView(dataTable);
 
-        displayChecked.setText("Display Alll Fields");
+        displayChecked.setText("Display All Fields");
 
         refreshButton.setText("Refresh");
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
