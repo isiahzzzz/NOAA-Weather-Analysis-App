@@ -228,11 +228,11 @@ public class Database {
     }
 
     /**
-     *
-     * @param endTime
-     * @param startTime
-     * @param comparisons
-     * @param complexity
+     * todo: implement method to handle dump processing, helper to dumpRunStats
+     * @param endTime end of recorded time
+     * @param startTime start of recorded time
+     * @param comparisons number of comparisons
+     * @param complexity expected time complexity
      */
     private void handleDump(long endTime, long startTime, int comparisons, String complexity){
 
