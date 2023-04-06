@@ -34,6 +34,8 @@ public class Database {
     private Record[] dataArray;
     // gui singleton
     private final GUI guiInstance;
+    //true when unit testing
+    protected boolean JUnitTest = false;
 
     /**
      * Initializes database
@@ -83,15 +85,17 @@ public class Database {
             dataArray = new Record[dataSet.size()];
             dataArray = dataSet.toArray(dataArray);
             //console write for development
-            if(this.guiInstance == null) {
-                System.out.print("\r");
-                System.out.println("Success! Created database.");
-                System.out.println("==========GENERAL FACTS ABOUT DATA===========");
-                System.out.println(calculateDataFacts(fileName));
-                System.out.println("=============================================");
-                reader.close();
-            } else {
-                guiInstance.setFileTextField(calculateDataFacts(fileName));
+            if(!JUnitTest) {
+                if (this.guiInstance == null) {
+                    System.out.print("\r");
+                    System.out.println("Success! Created database.");
+                    System.out.println("==========GENERAL FACTS ABOUT DATA===========");
+                    System.out.println(calculateDataFacts(fileName));
+                    System.out.println("=============================================");
+                    reader.close();
+                } else {
+                    guiInstance.setFileTextField(calculateDataFacts(fileName));
+                }
             }
 
         } catch (FileNotFoundException e){
@@ -149,12 +153,18 @@ public class Database {
                 coldestDay.getStation().getDate(), hottestTempRecorded,
                 hottestDay.getStation().getDate(), hottestTempRecorded - coldestTempRecorded);
     }
-    public Record[] getDataSet() {
+    public Record[] getDataArray() {
         return dataArray;
     }
 
     public ArrayList<Record> getDataList() {
         return new ArrayList<>(Arrays.asList(dataArray));
+    }
+
+    protected void trimArrayForTest(int size) {
+        Record[] temp = new Record[size];
+        System.arraycopy(dataArray, 0, temp, 0, size);
+        dataArray = temp;
     }
 
     /**
@@ -169,8 +179,10 @@ public class Database {
         Sorts<Record> temp = new Sorts<>();
         Scanner sc = new Scanner(System.in);
         if(guiInstance == null) {
-            key = sortsSetter(sc);
-            sc.nextLine();
+            if (!JUnitTest) {
+                key = sortsSetter(sc);
+                sc.nextLine();
+            }
         }
         if (key == 1) {
             Comparator<Record> cmp = paramSetter(sc, param);
@@ -212,11 +224,36 @@ public class Database {
                 guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
                         "O(n^2)"));
             }
+        } else if (key == 4) {
+            Comparator<Record> cmp = paramSetter(sc, param);
+            startTime = System.nanoTime();
+            temp.mergeSort(dataArray, 0, dataArray.length - 1, cmp);
+            endTime = System.nanoTime();
+            if(guiInstance == null) {
+                if(!JUnitTest)
+                    System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(n^2)"));
+            } else {
+                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
+                        "O(n^2)"));
+            }
+
         } else {
             System.err.println("Invalid selection, please enter a valid " +
                     "number");
             pickSorts(0, null);
         }
+    }
+
+    /**
+     *
+     * @param endTime
+     * @param startTime
+     * @param comparisons
+     * @param complexity
+     */
+    private void handleDump(long endTime, long startTime, int comparisons, String complexity){
+
     }
 
     /**
@@ -264,6 +301,7 @@ public class Database {
         System.out.println("[1] for insertion sort");
         System.out.println("[2] for dual-pivot");
         System.out.println("[3] selection sort");
+        System.out.println("[4] merge sort");
         return sc.nextInt();
     }
 
@@ -275,13 +313,12 @@ public class Database {
      */
     private Comparator<Record> paramSetter(Scanner sc, String param){
         String key;
-        if(guiInstance == null || param == null) {
+        if ((guiInstance == null && !JUnitTest) || param == null) {
             System.out.println("[tmax] sort data by tmax");
             System.out.println("[tmin] sort data by tmin");
             System.out.println("[snow] sort data by snow depth");
             System.out.println("[wind] sort data by wind speeds");
             System.out.println("[date] sort data by date");
-
             key = sc.nextLine().trim().toLowerCase();
         } else {
             key = param.toLowerCase();
@@ -358,47 +395,70 @@ public class Database {
         }
 
         /**
-         * Insertion Sort
-         * @param cmp Comparator
-         * @param dataArray array to be modified during the sort
-         * @param n recursion control variable
+         * Merge Sort
+         * @param arr array of Records
+         * @param l left index
+         * @param r right index
+         * @param cmp comparator
          */
-        public void mergeSort(Comparator<Record> cmp, E[] dataArray, int n) {
-            if (n < 2) {
-                return;
-            }
-            int mid = n / 2;
-            E[] leftSide = (E[]) new Record[mid];
-            E[] rightSide = (E[]) new Record[n - mid];
+        public void mergeSort(E[] arr, int l, int r, Comparator<Record> cmp) {
+            if (l < r) {
+                // Find the middle point
+                int m = l + (r - l) / 2;
 
-            for (int i = 0; i < mid; i++) {
-                leftSide[i] = dataArray[i];
-            }
+                // Sort first and second halves
+                mergeSort(arr, l, m, cmp);
+                mergeSort(arr, m + 1, r, cmp);
 
-            for (int i = mid; i < n; i++) {
-                rightSide[i - mid] = dataArray[i];
+                // Merge the sorted halves
+                merge(arr, l, m, r, cmp);
             }
-            mergeSort(cmp, leftSide, mid);
-            mergeSort(cmp, rightSide, n - mid);
-
         }
-        private void merge(E[] dataArray, E[] leftSide, E[] rightSide, int left, int right, Comparator<Record> cmp) {
+
+        /**
+         * Recursive Merge
+         * @param arr data array
+         * @param l left index
+         * @param m middle index
+         * @param r right index
+         * @param cmp Comparator
+         */
+        private void merge (E[] arr, int l, int m, int r, Comparator<Record> cmp) {
+            int n1 = m - l + 1;
+            int n2 = r - m;
+
+            E[] L = (E[]) new Record[n1];
+            E[] R = (E[]) new Record[n2];
+
+            for(int i = 0; i < n1; ++i) {
+                L[i] = arr[l + i];
+            }
+            for(int j = 0; j < n2; ++j) {
+                R[j] = arr[m + 1 + j];
+            }
             int i = 0;
             int j = 0;
-            int k = 0;
-
-            while(i < left && j < right) {
-                if(cmp.compare((Record) leftSide[i], (Record) rightSide[i]) <= 0 ) {
-                    dataArray[k++] = leftSide[i++];
+            int k = l;
+            while(i < n1 && j < n2) {
+                if(cmp.compare((Record) L[i], (Record) R[j]) <= 0){
+                    arr[k] = L[i];
+                    i++;
                 } else {
-                    dataArray[k++] = rightSide[j++];
+                    arr[k] = R[j];
+                    j++;
                 }
+                k++;
             }
-            while(i < left) {
-                dataArray[k++] = leftSide[i++];
+            while (i < n1) {
+                arr[k] = L[i];
+                i++;
+                k++;
             }
-            while(j < right) {
-                dataArray[k++] = rightSide[j++];
+
+            while (j < n2) {
+                arr[k] = R[j];
+                j++;
+                k++;
             }
         }
     }

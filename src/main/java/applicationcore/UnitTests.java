@@ -1,8 +1,14 @@
 package applicationcore;
 
 import datatypes.*;
+import datatypes.Record;
 import org.junit.Test;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Comparator;
+
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class UnitTests {
@@ -157,9 +163,21 @@ public class UnitTests {
         assertEquals("Station: NONE Date: Wed Dec 31 18:59:59 EST 1969",
                 testNan.toString());
     } */
-
     /**
-     * todo: write unit test for snow depth sort
+     * Test that checks continuity of mergeSort results against built in Java
+     * sort algorithm.
      */
+    @Test
+    public void mergeSortTest() {
+        Database data = new Database("D:\\Development\\NOAAWeatherApp\\PortlandWeatherData.csv", null);
+        data.JUnitTest = true;
+        int size = data.getDataArray().length;
+        data.trimArrayForTest(size);
+        Record[] array = data.getDataArray();
+        Record[] control = data.getDataArray();
+        Comparator<Record> cmp = new Record.CmpTMax();
+        Arrays.sort(control, cmp);
+        data.pickSorts(4, "tmax");
+        assertEquals("Merge sort failed to create a fully ordered list", Arrays.compare(array, control), 0);
+    }
 }
-

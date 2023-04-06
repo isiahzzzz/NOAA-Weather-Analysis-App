@@ -38,6 +38,7 @@ public class GUI extends javax.swing.JFrame {
         algoBox.addItem("Insertion");
         algoBox.addItem("Dual-pivot");
         algoBox.addItem("Selection");
+        algoBox.addItem("Merge Sort");
         consoleText.setEditable(false);
         sortText.setEditable(false);
         model = (DefaultTableModel)dataTable.getModel();

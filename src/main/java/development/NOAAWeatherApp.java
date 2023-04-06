@@ -36,7 +36,7 @@ public class NOAAWeatherApp {
                     System.out.println("How many data points do you want to " +
                             "print?");
                     int prints = sc.nextInt();
-                    Stream.of(data.getDataSet()).limit(prints).forEach(System.out::println);
+                    Stream.of(data.getDataArray()).limit(prints).forEach(System.out::println);
                     menu(fileName);
                     break;
                 case "s":
