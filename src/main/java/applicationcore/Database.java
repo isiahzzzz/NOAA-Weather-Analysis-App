@@ -9,24 +9,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-/**
- * REVISION HISTORY
- * 3-6-2023 - Merged GUI into project, updated Database constructor to work
- * with GUI and console.
- * 3-6-2023 - Large changes made to packaging structure, tested and working.
- * Adding comments to uncommented methods.
- * 2-23-2023 - Huge overhaul to sort menu, made implementing new sorts far
- * more efficient. Tested and working!
- * 2-18-2023 - Implemented sort by wind speed.
- * 1-8-2023 - Added Application.Record[] to enable usage of built-in Array.sorts
- * functionality.
- * 1-27-2023 - Finished CSVReader loop, tested and working, tested edge cases
- * -- still need to test more -- and wrote calculateDataFacts which
- * calculates generalized facts about the data being passed in.
- * 1-25-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- * 1-23-2023 - laid out class structure.
- */
 public class Database {
     // original list that's populated post file parse
     private ArrayList<Record> dataSet;
