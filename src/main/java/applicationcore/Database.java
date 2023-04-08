@@ -3,13 +3,14 @@ package applicationcore;
 import datatypes.*;
 import datatypes.Record;
 import guipack.GUI;
+import toolkit.Timer;
 
 import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-public class Database {
+public class Database extends Timer {
     // original list that's populated post file parse
     private ArrayList<Record> dataSet;
     // array that is used for sort performance recording
@@ -149,8 +150,6 @@ public class Database {
      * @param param null default [development], sort parameter otherwise.
      */
     public void pickSorts(int algorithm, String param) {
-        long startTime = 0;
-        long endTime = 0;
         int key = algorithm;
         Sorts<Record> temp = new Sorts<>();
         Scanner sc = new Scanner(System.in);
@@ -162,58 +161,32 @@ public class Database {
         }
         if (key == 1) {
             Comparator<Record> cmp = paramSetter(sc, param);
-            startTime = System.nanoTime();
+            startTimer();
             temp.insertionSort(cmp, dataArray);
-            endTime = System.nanoTime();
-            //this is to print to console when developing
-            if(guiInstance == null) {
-                System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(n^2)"));
-            } else {
-                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(n^2)"));
-            }
+            endTimer();
+            initDump(((CmpCnt)cmp).getCmpCnt(), "O(n^2)");
             ((CmpCnt) cmp).resetCmpCnt();
         } else if (key == 2) {
             Comparator<Record> cmp = paramSetter(sc, param);
-            startTime = System.nanoTime();
+            startTimer();
             Arrays.sort(dataArray, cmp);
-            endTime = System.nanoTime();
-            //this is to print to console when developing
-            if(guiInstance == null) {
-                System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(nlog(n))"));
-            } else {
-                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(nlog(n))"));
-            }
+            endTimer();
+            initDump(((CmpCnt)cmp).getCmpCnt(), "O(nlog(n))");
             ((CmpCnt) cmp).resetCmpCnt();
         } else if (key == 3){
             Comparator<Record> cmp = paramSetter(sc, param);
-            startTime = System.nanoTime();
+            startTimer();
             temp.selectionSort(cmp, dataArray);
-            endTime = System.nanoTime();
-            if(guiInstance == null) {
-                System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(n^2)"));
-            } else {
-                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(n^2)"));
-            }
+            endTimer();
+            initDump(((CmpCnt)cmp).getCmpCnt(), "O(n^2)");
+            ((CmpCnt) cmp).resetCmpCnt();
         } else if (key == 4) {
             Comparator<Record> cmp = paramSetter(sc, param);
-            startTime = System.nanoTime();
+            startTimer();
             temp.mergeSort(dataArray, 0, dataArray.length - 1, cmp);
-            endTime = System.nanoTime();
-            if(guiInstance == null) {
-                if(!JUnitTest)
-                    System.out.println(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                            "O(nlog(n))"));
-            } else {
-                guiInstance.setSortTextField(dumpRunStats(endTime, startTime, ((CmpCnt) cmp).getCmpCnt(),
-                        "O(nlog(n))"));
-            }
-
+            endTimer();
+            initDump(((CmpCnt)cmp).getCmpCnt(), "O(nlog(n))");
+            ((CmpCnt) cmp).resetCmpCnt();
         } else {
             System.err.println("Invalid selection, please enter a valid " +
                     "number");
@@ -222,32 +195,30 @@ public class Database {
     }
 
     /**
-     * todo: implement method to handle dump processing, helper to dumpRunStats
-     * @param endTime end of recorded time
-     * @param startTime start of recorded time
      * @param comparisons number of comparisons
      * @param complexity expected time complexity
      */
-    private void dumpHandler(long endTime, long startTime, int comparisons, String complexity){
-
+    private void initDump(int comparisons, String complexity){
+        if(guiInstance == null) {
+            System.out.println(dumpRunStats(comparisons, complexity));
+        } else {
+            guiInstance.setSortTextField(dumpRunStats(comparisons, complexity));
+        }
     }
 
     /**
      * Prints statistics associated with a given sort
-     * @param endTime end time recorded in nanoseconds
-     * @param startTime start time recorded in nanoseconds
      * @param comparisons number of comparisons made
      * @param complexity worst-case time complexity of a given algorithm
      */
-    private String dumpRunStats(long endTime, long startTime, int comparisons,
-                              String complexity) {
+    private String dumpRunStats(int comparisons, String complexity) {
         StringBuilder sb = new StringBuilder();
         switch(complexity) {
             case "O(n^2)" -> {
                 sb.append("=====STATS FROM SORT=====").append(System.lineSeparator());
                 sb.append(String.format("N: %d%n", dataArray.length));
                 sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
-                        (endTime - startTime) / 1000000));
+                        getResult()));
                 sb.append(String.format("NUMBER OF COMPARISONS MADE: %d%n",
                         comparisons));
                 sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
@@ -257,7 +228,7 @@ public class Database {
                 sb.append("=====STATS FROM SORT=====").append(System.lineSeparator());
                 sb.append(String.format("N: %d%n", dataArray.length));
                 sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
-                        (endTime - startTime) / 1000000));
+                        getResult()));
                 sb.append(String.format("NUMBER OF COMPARISONS MADE: %d%n",
                         comparisons));
                 sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
