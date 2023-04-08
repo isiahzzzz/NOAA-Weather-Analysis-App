@@ -1,13 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-25-2023 - Added secondary constructor that handles translation from
- * String to Double.
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class FrozenGroundThickness extends DataPoint{
     private final double thicknessOfIce;
 

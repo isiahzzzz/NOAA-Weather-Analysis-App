@@ -1,13 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-25-2023 - Added additional constructor to handle String to Integer
- * parsing for tmax data.
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class TMax extends DataPoint{
     private int tmax;
 

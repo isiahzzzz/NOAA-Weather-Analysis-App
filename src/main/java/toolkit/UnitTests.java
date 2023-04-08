@@ -1,12 +1,13 @@
-package applicationcore;
+package toolkit;
 
+import applicationcore.Database;
 import datatypes.Record;
 import org.junit.Test;
+import toolkit.Timer;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class UnitTests {
@@ -27,5 +28,18 @@ public class UnitTests {
         Arrays.sort(control, cmp);
         data.pickSorts(4, "tmax");
         assertEquals("Merge sort failed to create a fully ordered list", Arrays.compare(array, control), 0);
+    }
+
+    @Test
+    public void testTimingFunction() {
+        Timer timer = new Timer();
+        timer.startTimer();
+        long startTimeValidate = System.nanoTime();
+            for (int i = 0; i < 10000; i++) {
+                System.out.println();
+            }
+            timer.endTimer();
+            System.out.println(((System.nanoTime() - startTimeValidate) / 1000000));
+            assertEquals(timer.getResult(), ((System.nanoTime() - startTimeValidate) / 1000000));
     }
 }

@@ -1,13 +1,6 @@
 package datatypes;
 
 import java.util.Arrays;
-
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public abstract class DataPoint {
     // general flags
     protected String attributes;

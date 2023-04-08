@@ -1,11 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class AverageCloudiness extends DataPoint {
     private final double avgCloudiness;
 

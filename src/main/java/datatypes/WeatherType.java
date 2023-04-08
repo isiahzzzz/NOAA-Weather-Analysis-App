@@ -2,12 +2,6 @@ package datatypes;
 
 import java.util.Arrays;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class WeatherType extends DataPoint {
     // int value of weather type
     private String[] weatherTypes;

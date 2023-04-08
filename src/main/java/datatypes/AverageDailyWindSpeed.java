@@ -1,11 +1,6 @@
 package datatypes;
-
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
+@Deprecated
+// preparing for deletion. Unused class.
 public class AverageDailyWindSpeed extends DataPoint {
     private final double avgWindSpeed;
 

@@ -1,14 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 2-18-2023 - Isiah Castro - Changed print formatting to help with clarity.
- * 1-25-2023 - Added additional constructor to handle the parsing of String
- * to Double. Also added documentation.
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class PeakWindSpeed extends DataPoint {
     private final double peakWindSpeed;
 

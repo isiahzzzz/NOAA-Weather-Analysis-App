@@ -1,13 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-25-2023 - Added alternative constructor for parsing String into Double,
- * also added documentation.
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class SnowDepth extends DataPoint {
     private final double snowDepth;
 
