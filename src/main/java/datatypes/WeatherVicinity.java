@@ -1,13 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-27-2023 - Added .trim to ParseInt within constructor to avoid unreadable
- * parsing values, will have to do that for array attribs at some point too.
- * 1-25-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class WeatherVicinity extends DataPoint{
     private final int weatherInVicinity;
 

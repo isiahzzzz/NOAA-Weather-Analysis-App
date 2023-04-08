@@ -2,15 +2,6 @@ package datatypes;
 
 import java.util.Comparator;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-28-2023 - added compareTo that implements a natural sort (dates) and a
- * sort for Application.TMin, Application.TMax, and snowfall per day. Also added documentation.
- * 1-27-2023 - added getters and setters, no further changes.
- * 1-25-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class Record implements Comparable<Record> {
     //private class members
     private final StationData station;

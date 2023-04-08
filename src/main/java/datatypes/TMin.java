@@ -1,13 +1,5 @@
 package datatypes;
 
-/**
- * REVISION HISTORY
- * =============================================================================
- * 1-25-2023 - Added additional constructor to handle the parsing of String
- * data to Integer. Also added documentation.
- * 1-24-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
 public class TMin extends DataPoint{
     //smallest temp achieved in day
     private final int tmin;

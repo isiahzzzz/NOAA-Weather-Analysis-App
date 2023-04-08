@@ -18,7 +18,7 @@ public class Database extends Timer {
     // gui singleton
     private final GUI guiInstance;
     //true when unit testing
-    protected boolean JUnitTest = false;
+    public boolean JUnitTest = false;
 
     /**
      * Initializes database
@@ -302,7 +302,7 @@ public class Database extends Timer {
      * Used only when unit testing array sorts for a smaller sample pool.
      * @param size size that array will be trimmed to
      */
-    protected void trimArrayForTest(int size) {
+    public void trimArrayForTest(int size) {
         Record[] temp = new Record[size];
         System.arraycopy(dataArray, 0, temp, 0, size);
         dataArray = temp;

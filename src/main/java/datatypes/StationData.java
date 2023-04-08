@@ -1,14 +1,5 @@
-package datatypes; /**
- * REVISION HISTORY
- * =============================================================================
- * 1-28-2023 - Added accessor that returns Date object rather than String.
- * 1-27-2023 - Added two accessors for Date and Station, added formatting for
- * date printing.
- * 1-25-2023 - Changed constructor from Date to String so that I can handle
- * Date object creation within the constructor.
- * 1-25-2023 - Created class, default constructor, parameterized constructor,
- * private class members.
- */
+package datatypes;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
