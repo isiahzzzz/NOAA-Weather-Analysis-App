@@ -15,10 +15,13 @@ public class Database extends Timer {
     private ArrayList<Record> dataSet;
     // array that is used for sort performance recording
     private Record[] dataArray;
+    private Record[] keepData;
     // gui singleton
     private final GUI guiInstance;
     //true when unit testing
-    public boolean JUnitTest = false;
+    protected boolean JUnitTest = false;
+    private boolean runAllSorts = false;
+    private String log = "";
 
     /**
      * Initializes database
@@ -67,7 +70,8 @@ public class Database extends Timer {
             }
             dataArray = new Record[dataSet.size()];
             dataArray = dataSet.toArray(dataArray);
-            //console write for development
+            keepData = new Record[dataSet.size()];
+            System.arraycopy(dataArray, 0, this.keepData, 0, dataArray.length);
             if(!JUnitTest) {
                 if (this.guiInstance == null) {
                     System.out.print("\r");
@@ -139,9 +143,14 @@ public class Database extends Timer {
     public Record[] getDataArray() {
         return dataArray;
     }
-
     public ArrayList<Record> getDataList() {
         return new ArrayList<>(Arrays.asList(dataArray));
+    }
+    public String getLog() {
+        return this.log;
+    }
+    public void setRunAllSorts(boolean v) {
+        this.runAllSorts = v;
     }
 
     /**
@@ -201,6 +210,9 @@ public class Database extends Timer {
     private void initDump(int comparisons, String complexity){
         if(guiInstance == null) {
             System.out.println(dumpRunStats(comparisons, complexity));
+        } else if (runAllSorts) {
+            this.log += dumpRunStats(comparisons, complexity);
+            System.arraycopy(this.keepData, 0, this.dataArray, 0, this.keepData.length);
         } else {
             guiInstance.setSortTextField(dumpRunStats(comparisons, complexity));
         }
@@ -302,7 +314,7 @@ public class Database extends Timer {
      * Used only when unit testing array sorts for a smaller sample pool.
      * @param size size that array will be trimmed to
      */
-    public void trimArrayForTest(int size) {
+    protected void trimArrayForTest(int size) {
         Record[] temp = new Record[size];
         System.arraycopy(dataArray, 0, temp, 0, size);
         dataArray = temp;
