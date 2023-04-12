@@ -22,6 +22,14 @@ public class Database extends Timer {
     public boolean JUnitTest = false;
     private boolean runAllSorts = false;
     private String log = "";
+    private String savedFileLocation = "";
+    private final String[] sorts = {
+            "Insertion Sort",
+            "Dual-Pivot Quicksort",
+            "Selection Sort",
+            "Merge Sort"
+    };
+    private int currentSortKey;
 
     /**
      * Initializes database
@@ -38,6 +46,7 @@ public class Database extends Timer {
             reader.readNext();
             //first actual line
             temp = reader.readNext();
+            this.savedFileLocation = fileName;
             System.out.print("PARSING");
             while(temp != null) {
                 //creating station
@@ -147,10 +156,15 @@ public class Database extends Timer {
         return new ArrayList<>(Arrays.asList(dataArray));
     }
     public String getLog() {
-        return this.log;
+        String temp = this.log;
+        this.log = "";
+        return temp;
     }
     public void setRunAllSorts(boolean v) {
         this.runAllSorts = v;
+    }
+    public String getSavedFileLocation() {
+        return this.savedFileLocation;
     }
 
     /**
@@ -160,6 +174,7 @@ public class Database extends Timer {
      */
     public void pickSorts(int algorithm, String param) {
         int key = algorithm;
+        this.currentSortKey = key - 1;
         Sorts<Record> temp = new Sorts<>();
         Scanner sc = new Scanner(System.in);
         if(guiInstance == null) {
@@ -227,26 +242,28 @@ public class Database extends Timer {
         StringBuilder sb = new StringBuilder();
         switch(complexity) {
             case "O(n^2)" -> {
-                sb.append("=====STATS FROM SORT=====").append(System.lineSeparator());
+                sb.append(this.sorts[this.currentSortKey].toUpperCase()).append(System.lineSeparator());
                 sb.append(String.format("N: %d%n", dataArray.length));
                 sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
                         getResult()));
-                sb.append(String.format("NUMBER OF COMPARISONS MADE: %d%n",
+                sb.append(String.format("NUMBER OF COMPARISONS MADE: %,d%n",
                         comparisons));
-                sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %,.0f%n",
                         Math.pow(dataArray.length, 2)));
             }
             case "O(nlog(n))" -> {
-                sb.append("=====STATS FROM SORT=====").append(System.lineSeparator());
+                sb.append(this.sorts[this.currentSortKey].toUpperCase()).append(System.lineSeparator());
                 sb.append(String.format("N: %d%n", dataArray.length));
                 sb.append(String.format("ACTUAL TIME TAKEN: %d milliseconds%n",
                         getResult()));
-                sb.append(String.format("NUMBER OF COMPARISONS MADE: %d%n",
+                sb.append(String.format("NUMBER OF COMPARISONS MADE: %,d%n",
                         comparisons));
-                sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %.0f%n",
+                sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %,.0f%n",
                         dataArray.length * Math.log(dataArray.length)));
             }
         }
+        sb.append("===================================");
+        sb.append(System.lineSeparator());
         return sb.toString();
     }
 
