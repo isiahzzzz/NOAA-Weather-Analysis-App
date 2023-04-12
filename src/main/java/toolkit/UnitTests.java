@@ -3,7 +3,6 @@ package toolkit;
 import applicationcore.Database;
 import datatypes.Record;
 import org.junit.Test;
-import toolkit.Timer;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,7 +20,7 @@ public class UnitTests {
         Database data = new Database("D:\\Development\\NOAAWeatherApp\\PortlandWeatherData.csv", null);
         data.JUnitTest = true;
         int size = data.getDataArray().length;
-        data.trimArrayForTest(size);
+        data.trimArray(size);
         Record[] array = data.getDataArray();
         Record[] control = data.getDataArray();
         Comparator<Record> cmp = new Record.CmpTMax();

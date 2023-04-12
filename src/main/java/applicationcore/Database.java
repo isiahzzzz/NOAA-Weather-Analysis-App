@@ -19,7 +19,7 @@ public class Database extends Timer {
     // gui singleton
     private final GUI guiInstance;
     //true when unit testing
-    protected boolean JUnitTest = false;
+    public boolean JUnitTest = false;
     private boolean runAllSorts = false;
     private String log = "";
 
@@ -135,7 +135,7 @@ public class Database extends Timer {
                         "The hottest temp recorded was %.1ff, and it occurred" +
                         " on %s%n" +
                         "That is a difference of %.1f degrees!",
-                fileName, dataSet.size() + 1, weeks, years, totalSnowFallen,
+                fileName.substring(fileName.lastIndexOf(":") + 2), dataSet.size() + 1, weeks, years, totalSnowFallen,
                 totalSnowFallen / 12, coldestTempRecorded,
                 coldestDay.getStation().getDate(), hottestTempRecorded,
                 hottestDay.getStation().getDate(), hottestTempRecorded - coldestTempRecorded);
@@ -311,13 +311,14 @@ public class Database extends Timer {
     }
 
     /**
-     * Used only when unit testing array sorts for a smaller sample pool.
+     * Used to trim dataset for running tests on various data lengths.
      * @param size size that array will be trimmed to
      */
-    protected void trimArrayForTest(int size) {
+    public void trimArray(int size) {
         Record[] temp = new Record[size];
         System.arraycopy(dataArray, 0, temp, 0, size);
         dataArray = temp;
+        keepData = temp;
     }
 
     /**
