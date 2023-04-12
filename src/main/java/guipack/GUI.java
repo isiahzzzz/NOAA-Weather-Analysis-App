@@ -39,10 +39,16 @@ public class GUI extends javax.swing.JFrame {
         algoBox.addItem("Dual-pivot");
         algoBox.addItem("Selection");
         algoBox.addItem("Merge Sort");
+        versionLabel.setText("v1.2.4");
+        displayChecked.setText("Display all fields");
+        runAllSorts.setText("Run all sorts");
         consoleText.setEditable(false);
         sortText.setEditable(false);
         model = (DefaultTableModel)dataTable.getModel();
         homePane.setVisible(false);
+        databaseLengthLabel.setVisible(false);
+        dataLengthHeader.setVisible(false);
+        trimSuccess.setVisible(false);
     }
 
     /**
@@ -81,6 +87,13 @@ public class GUI extends javax.swing.JFrame {
         paramLabel = new javax.swing.JLabel();
         algoBox = new javax.swing.JComboBox<>();
         algoLabel = new javax.swing.JLabel();
+        runAllSorts = new javax.swing.JButton();
+        sliderLabel = new javax.swing.JLabel();
+        trimAmount = new javax.swing.JTextField();
+        runTrim = new javax.swing.JButton();
+        dataLengthHeader = new javax.swing.JLabel();
+        databaseLengthLabel = new javax.swing.JLabel();
+        trimSuccess = new javax.swing.JLabel();
 
         moreInfo.setSize(new java.awt.Dimension(500, 500));
 
@@ -121,9 +134,11 @@ public class GUI extends javax.swing.JFrame {
         setTitle("NOAA WEATHER APP");
         setIconImages(null);
         setMaximumSize(new java.awt.Dimension(1000, 1000));
-        setPreferredSize(new java.awt.Dimension(730, 440));
+        setPreferredSize(new java.awt.Dimension(740, 445));
 
         homePane.setEnabled(false);
+        homePane.setPreferredSize(new java.awt.Dimension(730, 440));
+        homePane.setRequestFocusEnabled(false);
 
         moreInformationButton.setText("More Info");
         moreInformationButton.setToolTipText("click for more information!");
@@ -141,27 +156,26 @@ public class GUI extends javax.swing.JFrame {
         headerLabel.setText("Written by Isiah Castro");
 
         versionLabel.setForeground(new java.awt.Color(255, 0, 0));
-        versionLabel.setText("V1.2.0");
 
         javax.swing.GroupLayout homePaneLayout = new javax.swing.GroupLayout(homePane);
         homePane.setLayout(homePaneLayout);
         homePaneLayout.setHorizontalGroup(
             homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(homePaneLayout.createSequentialGroup()
-                .addGap(269, 269, 269)
-                .addGroup(homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(headerLabel)
-                    .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(288, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePaneLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(versionLabel)
                 .addGap(17, 17, 17))
+            .addGroup(homePaneLayout.createSequentialGroup()
+                .addGap(269, 269, 269)
+                .addGroup(homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(329, Short.MAX_VALUE))
         );
         homePaneLayout.setVerticalGroup(
             homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePaneLayout.createSequentialGroup()
-                .addContainerGap(154, Short.MAX_VALUE)
+                .addContainerGap(172, Short.MAX_VALUE)
                 .addComponent(headerLabel)
                 .addGap(18, 18, 18)
                 .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -171,6 +185,8 @@ public class GUI extends javax.swing.JFrame {
         );
 
         mainPane.addTab("Home", homePane);
+
+        loadFilePane.setPreferredSize(new java.awt.Dimension(715, 440));
 
         csvLabel.setText("Choose a CSV");
 
@@ -206,7 +222,7 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(loadFilePaneLayout.createSequentialGroup()
                         .addComponent(fileLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE))
                 .addContainerGap())
         );
         loadFilePaneLayout.setVerticalGroup(
@@ -218,7 +234,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(openFile)
                 .addGap(24, 24, 24)
                 .addComponent(statusLabel)
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(179, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loadFilePaneLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(fileLabel)
@@ -241,8 +257,6 @@ public class GUI extends javax.swing.JFrame {
         dataTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         dataTable.setShowGrid(true);
         tablePane.setViewportView(dataTable);
-
-        displayChecked.setText("Display All Fields");
 
         refreshButton.setText("Refresh");
         refreshButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -300,26 +314,62 @@ public class GUI extends javax.swing.JFrame {
         algoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         algoLabel.setText("Algorithm");
 
+        runAllSorts.setText("jButton1");
+        runAllSorts.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runAllSortsActionPerformed(evt);
+            }
+        });
+
+        sliderLabel.setText("Modify Dataset Length");
+
+        trimAmount.setToolTipText("Enter truncated length");
+
+        runTrim.setText("Trim");
+        runTrim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runTrimActionPerformed(evt);
+            }
+        });
+
+        dataLengthHeader.setText("Current Dataset Length:");
+
+        databaseLengthLabel.setText("jLabel2");
+
+        trimSuccess.setText("jLabel1");
+
         javax.swing.GroupLayout sortsPaneLayout = new javax.swing.GroupLayout(sortsPane);
         sortsPane.setLayout(sortsPaneLayout);
         sortsPaneLayout.setHorizontalGroup(
             sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sortsPaneLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(sortsPaneLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(sortOptions, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(paramLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addComponent(trimAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                        .addComponent(runTrim))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sortsPaneLayout.createSequentialGroup()
                         .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(algoBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(algoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18))
+                            .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(sortOptions, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(paramLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(sortButton))
+                        .addGap(18, 18, 18)
+                        .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(algoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(algoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(runAllSorts, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(sortsPaneLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(sortButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(sliderLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(trimSuccess)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(sortsPaneLayout.createSequentialGroup()
+                        .addComponent(dataLengthHeader)
+                        .addGap(18, 18, 18)
+                        .addComponent(databaseLengthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -338,8 +388,22 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sortOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(algoBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(126, 126, 126)
-                .addComponent(sortButton)
+                .addGap(47, 47, 47)
+                .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sortButton)
+                    .addComponent(runAllSorts))
+                .addGap(18, 18, 18)
+                .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dataLengthHeader)
+                    .addComponent(databaseLengthLabel))
+                .addGap(104, 104, 104)
+                .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(sliderLabel)
+                    .addComponent(trimSuccess))
+                .addGap(18, 18, 18)
+                .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(trimAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(runTrim))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -389,6 +453,10 @@ public class GUI extends javax.swing.JFrame {
                 statusLabel.setForeground(Color.GREEN);
                 data = new Database(file.getAbsolutePath(), getInstance());
                 fileLabel.setText("File: " + file.getName());
+                sliderLabel.setVisible(true);
+                dataLengthHeader.setVisible(true);
+                databaseLengthLabel.setText(String.valueOf(data.getDataArray().length));
+                databaseLengthLabel.setVisible(true);
             } else {
                 statusLabel.setText("Failure");
                 statusLabel.setForeground(Color.RED);
@@ -413,7 +481,6 @@ public class GUI extends javax.swing.JFrame {
                     Objects.requireNonNull(sortOptions.getSelectedItem()).toString());
             populateTable();
     }
-
     /**
      * Handles refreshing the table when user wants to show extra data.
      * @param evt not used
@@ -441,6 +508,33 @@ public class GUI extends javax.swing.JFrame {
         //opens moreInfo dialog box
         moreInfo.setVisible(true);
     }//GEN-LAST:event_moreInformationButtonActionPerformed
+
+    /**
+     * Runs every sort and simultaneously records all statistics about the sorts.
+     * @param evt not used
+     */
+    private void runAllSortsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runAllSortsActionPerformed
+        data.setRunAllSorts(true);
+        for(int i = 1; i <= 4; i++) {
+            data.pickSorts(i, Objects.requireNonNull(sortOptions.getSelectedItem()).toString());
+        }
+        setSortTextField(data.getLog());
+        data.setRunAllSorts(false);
+    }//GEN-LAST:event_runAllSortsActionPerformed
+
+    private void runTrimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runTrimActionPerformed
+        try {
+            data.trimArray(Integer.parseInt(trimAmount.getText()));
+            databaseLengthLabel.setText(String.valueOf(data.getDataArray().length));
+            trimSuccess.setForeground(Color.GREEN);
+            trimSuccess.setText("Trimmed");
+            trimSuccess.setVisible(true);
+        } catch (NumberFormatException e) {
+            trimSuccess.setForeground(Color.RED);
+            trimSuccess.setText("Please enter a valid number...");
+            trimSuccess.setVisible(true);
+        }
+    }//GEN-LAST:event_runTrimActionPerformed
 
 
     /**
@@ -558,13 +652,18 @@ public class GUI extends javax.swing.JFrame {
     public void setFileTextField(String value) {
         consoleText.setText(value);
     }
+    public String getSortField() {
+        return Objects.requireNonNull(sortOptions.getSelectedItem()).toString();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> algoBox;
     private javax.swing.JLabel algoLabel;
     private javax.swing.JTextArea consoleText;
     private javax.swing.JLabel csvLabel;
+    private javax.swing.JLabel dataLengthHeader;
     private javax.swing.JTable dataTable;
+    private javax.swing.JLabel databaseLengthLabel;
     private javax.swing.JCheckBox displayChecked;
     private javax.swing.JLabel fileLabel;
     private javax.swing.JLabel headerLabel;
@@ -580,12 +679,17 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton openFile;
     private javax.swing.JLabel paramLabel;
     private javax.swing.JButton refreshButton;
+    private javax.swing.JButton runAllSorts;
+    private javax.swing.JButton runTrim;
+    private javax.swing.JLabel sliderLabel;
     private javax.swing.JButton sortButton;
     private javax.swing.JComboBox<String> sortOptions;
     private javax.swing.JTextArea sortText;
     private javax.swing.JPanel sortsPane;
     private javax.swing.JLabel statusLabel;
     private javax.swing.JScrollPane tablePane;
+    private javax.swing.JTextField trimAmount;
+    private javax.swing.JLabel trimSuccess;
     private javax.swing.JLabel versionLabel;
     private javax.swing.JPanel viewData;
     // End of variables declaration//GEN-END:variables
