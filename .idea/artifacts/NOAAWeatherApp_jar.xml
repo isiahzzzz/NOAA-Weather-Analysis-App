@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NOAAWeatherApp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NOAAWeatherApp_jar</output-path>
+    <root id="archive" name="NOAAWeatherApp.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="NOAAWeatherApp" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/sf/opencsv/opencsv/2.3/opencsv-2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/junit/junit/4.13.2/junit-4.13.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/formdev/flatlaf/3.0/flatlaf-3.0.jar" path-in-jar="/" />
+      <element id="library" level="project" name="Maven: com.formdev:flatlaf:3.0" />
+      <element id="library" level="project" name="Maven: junit:junit:4.13.2" />
+      <element id="library" level="project" name="Maven: net.sf.opencsv:opencsv:2.3" />
+      <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
+    </root>
+  </artifact>
+</component>
