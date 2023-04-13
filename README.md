@@ -30,7 +30,7 @@
   
 ### Build and Compile
 
-For the release verison of the program, you will need Java JDK >= 18.0.1. To compile the project yourself, clone the repo, select a JDK >= 18.0.1, and set the main class to guipack.GUI.
+For the release verison of the program, you will need Java JDK >= 17. To compile the project yourself, clone the repo, select a JDK >= 17, and set the main class to guipack.GUI.
 
 
 <p align="center">
