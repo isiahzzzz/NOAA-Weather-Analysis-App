@@ -1,14 +1,16 @@
 package applicationcore;
 
+import au.com.bytecode.opencsv.CSVWriter;
 import datatypes.*;
 import datatypes.Record;
 import guipack.GUI;
 import toolkit.Timer;
 
 import au.com.bytecode.opencsv.CSVReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
+import javax.swing.*;
+import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 public class Database extends Timer {
     // original list that's populated post file parse
@@ -21,6 +23,7 @@ public class Database extends Timer {
     //true when unit testing
     public boolean JUnitTest = false;
     private boolean runAllSorts = false;
+    private boolean isContinuouslySavingResults = false;
     private String log = "";
     private String savedFileLocation = "";
     private final String[] sorts = {
@@ -30,6 +33,7 @@ public class Database extends Timer {
             "Merge Sort"
     };
     private int currentSortKey;
+    private Stack<Result> resultStack = new Stack<>();
 
     /**
      * Initializes database
@@ -38,6 +42,14 @@ public class Database extends Timer {
      */
     public Database(String fileName, GUI gui) {
         this.guiInstance = gui;
+        initDatabase(fileName);
+    }
+
+    /**
+     * Initializes database
+     * @param fileName path to file
+     */
+    private void initDatabase(String fileName){
         try {
             CSVReader reader = new CSVReader(new FileReader(fileName));
             String[] temp;
@@ -104,7 +116,6 @@ public class Database extends Timer {
             System.err.println("Tried to access non-existent data.");
             System.exit(4);
         }
-
     }
 
 
@@ -143,7 +154,7 @@ public class Database extends Timer {
                         " on %s%n" +
                         "The hottest temp recorded was %.1ff, and it occurred" +
                         " on %s%n" +
-                        "That is a difference of %.1f degrees!",
+                        "That is a difference of %.1f degrees.",
                 fileName.substring(fileName.lastIndexOf(":") + 2), dataSet.size() + 1, weeks, years, totalSnowFallen,
                 totalSnowFallen / 12, coldestTempRecorded,
                 coldestDay.getStation().getDate(), hottestTempRecorded,
@@ -155,16 +166,22 @@ public class Database extends Timer {
     public ArrayList<Record> getDataList() {
         return new ArrayList<>(Arrays.asList(dataArray));
     }
+    public void setRunAllSorts(boolean v) {
+        this.runAllSorts = v;
+    }
+    public void setContinuouslySavingResults(boolean v) {
+        this.isContinuouslySavingResults = v;
+    }
+    public String getSavedFileLocation() {
+        return this.savedFileLocation;
+    }
     public String getLog() {
         String temp = this.log;
         this.log = "";
         return temp;
     }
-    public void setRunAllSorts(boolean v) {
-        this.runAllSorts = v;
-    }
-    public String getSavedFileLocation() {
-        return this.savedFileLocation;
+    public boolean getContinuouslySavingResults(){
+        return this.isContinuouslySavingResults;
     }
 
     /**
@@ -250,6 +267,13 @@ public class Database extends Timer {
                         comparisons));
                 sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %,.0f%n",
                         Math.pow(dataArray.length, 2)));
+                if(isContinuouslySavingResults) {
+                    resultStack.push(new Result(this.sorts[this.currentSortKey].toUpperCase(),
+                            this.dataArray.length,
+                            getResult(),
+                            comparisons,
+                            Math.pow(dataArray.length, 2)));
+                }
             }
             case "O(nlog(n))" -> {
                 sb.append(this.sorts[this.currentSortKey].toUpperCase()).append(System.lineSeparator());
@@ -260,11 +284,51 @@ public class Database extends Timer {
                         comparisons));
                 sb.append(String.format("PROJECTED NUMBER OF COMPARISONS: %,.0f%n",
                         dataArray.length * Math.log(dataArray.length)));
+                if(isContinuouslySavingResults) {
+                    resultStack.push(new Result(this.sorts[this.currentSortKey].toUpperCase(),
+                            this.dataArray.length,
+                            getResult(),
+                            comparisons,
+                            dataArray.length * Math.log(dataArray.length)));
+                }
             }
         }
         sb.append("===================================");
         sb.append(System.lineSeparator());
         return sb.toString();
+    }
+
+    /**
+     * Dump statistics to CSV.
+     */
+    public void writeToCSV(){
+        List<String[]> dataPoints = new ArrayList<>();
+        String[] header = {
+                "Sort",
+                "N",
+                "Time (ms)",
+                "Projected Comparisons",
+                "Actual Comparisons"
+        };
+        while(!resultStack.isEmpty()){
+            Result result = resultStack.pop();
+            dataPoints.add(new String[] {
+                    result.getSortName(),
+                    String.valueOf(result.getN()),
+                    String.valueOf(result.getTimeTaken()),
+                    String.valueOf(result.getProjectedComparisons()),
+                    String.valueOf(result.getActualComparisons()),
+            });
+        }
+        try {
+            CSVWriter writer = new CSVWriter(new FileWriter("results.csv"));
+            writer.writeNext(header);
+            writer.writeAll(dataPoints);
+            writer.flush();
+            JOptionPane.showMessageDialog(guiInstance, "Successfully wrote to CSV", "CSV Success", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(guiInstance, "Error writing to CSV", "CSV Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

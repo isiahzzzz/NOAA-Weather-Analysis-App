@@ -4,13 +4,18 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.Stack;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import applicationcore.Database;
 import datatypes.Record;
+import datatypes.Result;
 
 
 /**
@@ -26,9 +31,6 @@ public class GUI extends javax.swing.JFrame {
         FlatIntelliJLaf.setup();
         initComponents();
         dataTable.setEnabled(false);
-        infoText.setEditable(false);
-        infoText.setLineWrap(true);
-        infoText.setWrapStyleWord(true);
         statusLabel.setVisible(false);
         sortOptions.addItem("TMAX");
         sortOptions.addItem("TMIN");
@@ -39,7 +41,7 @@ public class GUI extends javax.swing.JFrame {
         algoBox.addItem("Dual-pivot");
         algoBox.addItem("Selection");
         algoBox.addItem("Merge Sort");
-        versionLabel.setText("v1.3.0");
+        versionLabel.setText("v1.3.1");
         displayChecked.setText("Display all fields");
         runAllSorts.setText("Run all sorts");
         consoleText.setEditable(false);
@@ -50,6 +52,7 @@ public class GUI extends javax.swing.JFrame {
         dataLengthHeader.setVisible(false);
         trimSuccess.setVisible(false);
         reloadLabel.setVisible(false);
+        generateResultsButton.setVisible(false);
     }
 
     /**
@@ -59,10 +62,6 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        moreInfo = new javax.swing.JDialog();
-        infoPane = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        infoText = new javax.swing.JTextArea();
         reloadBeforeFilePane = new javax.swing.JDialog();
         mainPane = new javax.swing.JTabbedPane();
         homePane = new javax.swing.JPanel();
@@ -99,41 +98,8 @@ public class GUI extends javax.swing.JFrame {
         reloadButton = new javax.swing.JButton();
         reloadLabel = new javax.swing.JLabel();
         clearOutputButton = new javax.swing.JButton();
-
-        moreInfo.setSize(new java.awt.Dimension(500, 500));
-
-        infoText.setColumns(20);
-        infoText.setRows(5);
-        infoText.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nibh cras pulvinar mattis nunc sed. Malesuada bibendum arcu vitae elementum curabitur vitae nunc sed. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam. Est lorem ipsum dolor sit amet. At auctor urna nunc id cursus metus aliquam eleifend. Viverra accumsan in nisl nisi scelerisque eu ultrices vitae. Lobortis mattis aliquam faucibus purus in massa tempor nec feugiat. Ante in nibh mauris cursus. Tellus id interdum velit laoreet id. Sit amet massa vitae tortor condimentum. Dolor magna eget est lorem. Eget sit amet tellus cras. Gravida in fermentum et sollicitudin ac orci. Est pellentesque elit ullamcorper dignissim cras tincidunt lobortis feugiat. Enim neque volutpat ac tincidunt vitae semper quis lectus nulla. Mi proin sed libero enim sed faucibus turpis.\n\nAc tortor vitae purus faucibus ornare suspendisse sed nisi lacus. Ultricies tristique nulla aliquet enim. Pretium lectus quam id leo in vitae turpis massa sed. Semper feugiat nibh sed pulvinar proin gravida. Venenatis a condimentum vitae sapien. Mauris a diam maecenas sed enim. Aenean vel elit scelerisque mauris pellentesque pulvinar pellentesque. Nulla pellentesque dignissim enim sit amet venenatis. Enim ut sem viverra aliquet eget. Aliquam ut porttitor leo a diam sollicitudin tempor id. A diam maecenas sed enim ut sem viverra. Justo donec enim diam vulputate ut pharetra sit amet. Ipsum dolor sit amet consectetur adipiscing elit duis tristique sollicitudin. Libero volutpat sed cras ornare arcu. Eu non diam phasellus vestibulum lorem sed. Commodo viverra maecenas accumsan lacus vel facilisis. Tempor id eu nisl nunc mi.");
-        jScrollPane1.setViewportView(infoText);
-
-        javax.swing.GroupLayout infoPaneLayout = new javax.swing.GroupLayout(infoPane);
-        infoPane.setLayout(infoPaneLayout);
-        infoPaneLayout.setHorizontalGroup(
-            infoPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        infoPaneLayout.setVerticalGroup(
-            infoPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(infoPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout moreInfoLayout = new javax.swing.GroupLayout(moreInfo.getContentPane());
-        moreInfo.getContentPane().setLayout(moreInfoLayout);
-        moreInfoLayout.setHorizontalGroup(
-            moreInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(infoPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        moreInfoLayout.setVerticalGroup(
-            moreInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(infoPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        continueSavingResults = new javax.swing.JToggleButton();
+        generateResultsButton = new javax.swing.JButton();
 
         reloadBeforeFilePane.setTitle("ERROR");
         reloadBeforeFilePane.setIconImage(null);
@@ -160,8 +126,8 @@ public class GUI extends javax.swing.JFrame {
         homePane.setPreferredSize(new java.awt.Dimension(740, 440));
         homePane.setRequestFocusEnabled(false);
 
-        moreInformationButton.setText("More Info");
-        moreInformationButton.setToolTipText("click for more information!");
+        moreInformationButton.setText("More Info on GitHub");
+        moreInformationButton.setToolTipText("Redirects to GitHub repo");
         moreInformationButton.setFocusPainted(false);
         moreInformationButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         moreInformationButton.setMaximumSize(new java.awt.Dimension(125, 125));
@@ -182,24 +148,27 @@ public class GUI extends javax.swing.JFrame {
         homePaneLayout.setHorizontalGroup(
             homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePaneLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(733, Short.MAX_VALUE)
                 .addComponent(versionLabel)
                 .addGap(17, 17, 17))
             .addGroup(homePaneLayout.createSequentialGroup()
-                .addGap(269, 269, 269)
                 .addGroup(homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(headerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(345, Short.MAX_VALUE))
+                    .addGroup(homePaneLayout.createSequentialGroup()
+                        .addGap(314, 314, 314)
+                        .addComponent(headerLabel))
+                    .addGroup(homePaneLayout.createSequentialGroup()
+                        .addGap(293, 293, 293)
+                        .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         homePaneLayout.setVerticalGroup(
             homePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, homePaneLayout.createSequentialGroup()
-                .addContainerGap(172, Short.MAX_VALUE)
+                .addContainerGap(175, Short.MAX_VALUE)
                 .addComponent(headerLabel)
                 .addGap(18, 18, 18)
                 .addComponent(moreInformationButton, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(141, 141, 141)
+                .addGap(138, 138, 138)
                 .addComponent(versionLabel)
                 .addContainerGap())
         );
@@ -232,17 +201,17 @@ public class GUI extends javax.swing.JFrame {
         loadFilePaneLayout.setHorizontalGroup(
             loadFilePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loadFilePaneLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(28, 28, 28)
                 .addGroup(loadFilePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(openFile)
                     .addComponent(csvLabel)
                     .addComponent(statusLabel))
-                .addGap(43, 43, 43)
+                .addGap(44, 44, 44)
                 .addGroup(loadFilePaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(loadFilePaneLayout.createSequentialGroup()
                         .addComponent(fileLabel)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE))
                 .addContainerGap())
         );
         loadFilePaneLayout.setVerticalGroup(
@@ -378,6 +347,20 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        continueSavingResults.setText("Continuously Save Results");
+        continueSavingResults.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                continueSavingResultsActionPerformed(evt);
+            }
+        });
+
+        generateResultsButton.setText("Generate CSV");
+        generateResultsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generateResultsButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout sortsPaneLayout = new javax.swing.GroupLayout(sortsPane);
         sortsPane.setLayout(sortsPaneLayout);
         sortsPaneLayout.setHorizontalGroup(
@@ -414,7 +397,9 @@ public class GUI extends javax.swing.JFrame {
                                     .addGroup(sortsPaneLayout.createSequentialGroup()
                                         .addComponent(reloadButton)
                                         .addGap(18, 18, 18)
-                                        .addComponent(clearOutputButton)))
+                                        .addComponent(clearOutputButton))
+                                    .addComponent(continueSavingResults)
+                                    .addComponent(generateResultsButton))
                                 .addGap(0, 23, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 493, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -437,7 +422,11 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sortButton)
                             .addComponent(runAllSorts))
-                        .addGap(117, 117, 117)
+                        .addGap(18, 18, 18)
+                        .addComponent(continueSavingResults)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(generateResultsButton)
+                        .addGap(36, 36, 36)
                         .addComponent(reloadLabel)
                         .addGap(18, 18, 18)
                         .addGroup(sortsPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -476,6 +465,7 @@ public class GUI extends javax.swing.JFrame {
         getAccessibleContext().setAccessibleDescription("NOAA WEATHER APP");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -500,19 +490,17 @@ public class GUI extends javax.swing.JFrame {
         try {
             //checking to see if file is csv
             if (!"csv".equalsIgnoreCase(file.getAbsolutePath()
-                    .substring(file.getAbsolutePath().length() - 3, 
+                    .substring(file.getAbsolutePath().length() - 3,
                             file.getAbsolutePath().length() - 1))) {
-                statusLabel.setText("SUCCESS");
-                statusLabel.setForeground(Color.GREEN);
                 data = new Database(file.getAbsolutePath(), getInstance());
                 fileLabel.setText("File: " + file.getName());
                 sliderLabel.setVisible(true);
                 dataLengthHeader.setVisible(true);
                 databaseLengthLabel.setText(String.valueOf(data.getDataArray().length));
                 databaseLengthLabel.setVisible(true);
+                JOptionPane.showMessageDialog(getInstance(), "Successfully Initialized Database", "Database Notification", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                statusLabel.setText("Failure");
-                statusLabel.setForeground(Color.RED);
+                JOptionPane.showMessageDialog(getInstance(), "Failed To Initialize Database", "Database Notification", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NullPointerException e) {
             System.err.println("error in opening file");
@@ -520,7 +508,6 @@ public class GUI extends javax.swing.JFrame {
             loadFilePane.setVisible(true);
             return;
         }
-        statusLabel.setVisible(true);
         populateTable();
     }//GEN-LAST:event_openFileActionPerformed
 
@@ -559,7 +546,16 @@ public class GUI extends javax.swing.JFrame {
      */
     private void moreInformationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreInformationButtonActionPerformed
         //opens moreInfo dialog box
-        moreInfo.setVisible(true);
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if(desktop != null) {
+            try {
+                desktop.browse(new URI("https://github.com/isiahzzzz/NOAA-Weather-Analysis-App"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }//GEN-LAST:event_moreInformationButtonActionPerformed
 
     /**
@@ -606,6 +602,22 @@ public class GUI extends javax.swing.JFrame {
         sortText.setText("");
     }//GEN-LAST:event_clearOutputButtonActionPerformed
 
+    private void continueSavingResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueSavingResultsActionPerformed
+        if(!data.getContinuouslySavingResults()) {
+            generateResultsButton.setVisible(true);
+            JOptionPane.showMessageDialog(getInstance(), "Program will now save run results", "Continuous Saving", JOptionPane.INFORMATION_MESSAGE);
+            data.setContinuouslySavingResults(true);
+        } else {
+            generateResultsButton.setVisible(false);
+            JOptionPane.showMessageDialog(getInstance(), "Program will no longer save results", "Continuous Saving", JOptionPane.INFORMATION_MESSAGE);
+            data.setContinuouslySavingResults(false);
+        }
+    }//GEN-LAST:event_continueSavingResultsActionPerformed
+
+    private void generateResultsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateResultsButtonActionPerformed
+        data.writeToCSV();
+    }//GEN-LAST:event_generateResultsButtonActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -640,6 +652,24 @@ public class GUI extends javax.swing.JFrame {
              * Method entry. Gets GUI singleton and set's it to visible.
              */
             public void run() {
+                int version = Integer.parseInt(System.getProperty("java.version").substring(0,2));
+                if(version < 18){
+                    JOptionPane.showMessageDialog(getInstance(), """
+                            It is strongly recommended that you use JDK 18 and above.\s
+
+                            To ensure proper operation please visit https://www.oracle.com/java/technologies/downloads/ and download the latest JDK.""",
+                            "Version Warning",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+                if(version < 17) {
+                    JOptionPane.showMessageDialog(getInstance(), """
+                            Please update your JDK to JDK 17 or above. \s
+                            
+                            https://www.oracle.com/java/technologies/downloads/
+                            """, "Incompatible Version",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 getInstance().setVisible(true);
             }
         });
@@ -689,7 +719,7 @@ public class GUI extends javax.swing.JFrame {
                             record.getTmax().getTmax(),
                             record.getTmin().getTmin(),
                             record.getPeakWindSpeed().getPeakWindSpeed(),
-                            record.getSnowDepth().getSnowDepth(),
+                            record.getSnowFall().getAmntSnowed(),
                             });
                     dataTable.setModel(model);
                 }
@@ -701,7 +731,7 @@ public class GUI extends javax.swing.JFrame {
                             record.getStation().getDate(),
                             record.getTmax().getTmax(), record.getTmin().getTmin(),
                             record.getPeakWindSpeed().getPeakWindSpeed(),
-                            record.getSnowDepth().getSnowDepth()});
+                            record.getSnowFall().getAmntSnowed()});
                     dataTable.setModel(model);
                 }
             }
@@ -731,22 +761,20 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel algoLabel;
     private javax.swing.JButton clearOutputButton;
     private javax.swing.JTextArea consoleText;
+    private javax.swing.JToggleButton continueSavingResults;
     private javax.swing.JLabel csvLabel;
     private javax.swing.JLabel dataLengthHeader;
     private javax.swing.JTable dataTable;
     private javax.swing.JLabel databaseLengthLabel;
     private javax.swing.JCheckBox displayChecked;
     private javax.swing.JLabel fileLabel;
+    private javax.swing.JButton generateResultsButton;
     private javax.swing.JLabel headerLabel;
     private javax.swing.JPanel homePane;
-    private javax.swing.JPanel infoPane;
-    private javax.swing.JTextArea infoText;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel loadFilePane;
     private javax.swing.JTabbedPane mainPane;
-    private javax.swing.JDialog moreInfo;
     private javax.swing.JButton openFile;
     private javax.swing.JLabel paramLabel;
     private javax.swing.JButton refreshButton;
